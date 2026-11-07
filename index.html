@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FUTURA GAMES | Steam Store</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- ПАЛИТРА --- */
+        :root {
+            --bg-color: #0A0A0C;       
+            --text-color: #F9F9FD;     
+            --accent-violet: #8A2BE1;  
+            --accent-violet-hover: #9D42FF; 
+            --dark-navy: #1F1E2E;      
+            --card-bg: rgba(31, 30, 46, 0.6);
+            --drawer-bg: #151420;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            cursor: none; /* Скрываем стандартный курсор */
+            position: relative;
+        }
+
+        /* =========================================
+           ИГРОВОЙ ФОН (ДЕКОРАЦИИ)
+           ========================================= */
+        .bg-decorations {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        /* Сетка */
+        .bg-grid {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(138, 43, 225, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(138, 43, 225, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(circle at center, black 20%, transparent 80%);
+            -webkit-mask-image: radial-gradient(circle at center, black 20%, transparent 80%);
+            animation: gridMove 20s linear infinite;
+        }
+
+        /* Сканлайны */
+        .bg-scanlines {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.1));
+            background-size: 100% 4px;
+            opacity: 0.3;
+        }
+
+        /* Плавающие игровые предметы */
+        .bg-icon {
+            position: absolute;
+            color: rgba(138, 43, 225, 0.15);
+            width: 60px; height: 60px;
+            filter: drop-shadow(0 0 10px rgba(138, 43, 225, 0.2));
+            animation: floatIcon 15s ease-in-out infinite alternate;
+        }
+        
+        /* Разные позиции, размеры и тайминги */
+        .icon-1 { top: 15%; left: 10%; width: 70px; height: 70px; animation-duration: 18s; } /* Монета */
+        .icon-2 { top: 60%; right: 8%; width: 90px; height: 90px; animation-duration: 22s; animation-delay: -5s; transform: rotate(15deg); } /* Аптечка */
+        .icon-3 { bottom: 15%; left: 15%; width: 80px; height: 80px; animation-duration: 20s; animation-delay: -2s; transform: rotate(-10deg); } /* Сундук */
+        .icon-4 { top: 30%; right: 20%; width: 60px; height: 60px; animation-duration: 25s; animation-delay: -10s; } /* Кристалл */
+        .icon-5 { bottom: 30%; right: 40%; width: 85px; height: 85px; animation-duration: 19s; animation-delay: -7s; transform: rotate(25deg); } /* Картридж */
+
+        /* Светящиеся частицы */
+        .particle {
+            position: absolute;
+            background: var(--accent-violet);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-violet);
+            animation: particleFloat linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes gridMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 50px 50px; }
+        }
+
+        @keyframes floatIcon {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-40px) rotate(10deg); }
+        }
+
+        @keyframes particleFloat {
+            0% { transform: translateY(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100vh); opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .bg-icon, .particle { display: none; }
+            .bg-grid { background-size: 30px 30px; }
+        }
+        /* ========================================= */
+
+
+        /* --- КАСТОМНЫЙ КУРСОР --- */
+        .custom-cursor {
+            position: fixed; top: 0; left: 0; width: 8px; height: 8px;
+            background: var(--accent-violet); border-radius: 50%;
+            pointer-events: none; z-index: 9999;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 15px 5px rgba(138, 43, 225, 0.6);
+            transition: width 0.2s, height 0.2s, background 0.2s;
+        }
+        .custom-cursor-follower {
+            position: fixed; top: 0; left: 0; width: 40px; height: 40px;
+            border: 1px solid rgba(138, 43, 225, 0.3); background: rgba(138, 43, 225, 0.05);
+            border-radius: 50%; pointer-events: none; z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, border-color 0.2s, background 0.2s;
+            backdrop-filter: blur(2px);
+        }
+        .custom-cursor.hover-active { width: 15px; height: 15px; background: #fff; box-shadow: 0 0 20px 8px rgba(255, 255, 255, 0.8); }
+        .custom-cursor-follower.hover-active { width: 60px; height: 60px; border-color: rgba(255, 255, 255, 0.5); background: rgba(255, 255, 255, 0.1); }
+        
+        @media (pointer: coarse) {
+            body { cursor: auto; }
+            .custom-cursor, .custom-cursor-follower { display: none; }
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb { background: var(--accent-violet); border-radius: 10px; }
+
+        /* --- Иконки SVG --- */
+        .svg-icon { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: all 0.3s; }
+        .action-btn .svg-icon { width: 16px; height: 16px; }
+
+        /* =========================================
+           КОМПАКТНАЯ НАВИГАЦИЯ
+           ========================================= */
+        nav {
+            position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 900px; padding: 6px 12px 6px 16px; 
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; background: rgba(15, 15, 20, 0.65); 
+            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(249, 249, 253, 0.1); border-radius: 100px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        nav:hover { background: rgba(20, 20, 28, 0.8); border-color: rgba(138, 43, 225, 0.3); }
+
+        .logo { font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 0.95rem; letter-spacing: -0.5px; display: flex; align-items: center; gap: 4px; cursor: pointer; }
+        .logo span { color: var(--accent-violet); }
+        
+        .nav-links-container {
+            position: relative; display: flex; align-items: center;
+            background: rgba(255, 255, 255, 0.03); padding: 3px; border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-indicator {
+            position: absolute; top: 3px; height: calc(100% - 6px);
+            background: var(--accent-violet); border-radius: 50px;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); z-index: 1;
+            box-shadow: 0 0 15px rgba(138, 43, 225, 0.5); opacity: 0; pointer-events: none;
+        }
+        .nav-indicator.active { opacity: 1; }
+
+        .nav-links { display: flex; gap: 2px; position: relative; z-index: 2; }
+        .nav-links a {
+            color: #9a9aae; text-decoration: none; font-size: 0.7rem; text-transform: uppercase;
+            letter-spacing: 0.5px; font-weight: 600; padding: 6px 14px; border-radius: 50px;
+            transition: color 0.3s ease; position: relative;
+        }
+        .nav-links a:hover { color: var(--text-color); }
+        .nav-links a.active { color: var(--text-color); }
+
+        .user-actions { display: flex; gap: 6px; align-items: center; }
+
+        .icon-btn {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); 
+            color: var(--text-color); width: 32px; height: 32px; border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.3s ease; position: relative;
+        }
+        .icon-btn .svg-icon { width: 16px; height: 16px; } 
+        .icon-btn:hover { background: rgba(138, 43, 225, 0.15); border-color: var(--accent-violet); color: var(--accent-violet); transform: translateY(-2px); }
+
+        .badge {
+            position: absolute; top: -2px; right: -2px; background: #FF3366; color: white; 
+            font-size: 8px; width: 14px; height: 14px; border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; font-weight: bold; border: 1.5px solid var(--bg-color); transition: transform 0.2s;
+        }
+        .badge.pop { transform: scale(1.4); }
+
+        .btn-login {
+            background: var(--text-color); border: none; color: #000; padding: 7px 14px; border-radius: 50px;
+            font-family: 'Unbounded', sans-serif; font-size: 0.6rem; cursor: pointer; transition: all 0.3s; font-weight: 700; margin-left: 2px;
+        }
+        .btn-login:hover { background: var(--accent-violet); color: var(--text-color); box-shadow: 0 0 15px rgba(138, 43, 225, 0.4); transform: translateY(-2px);}
+
+        /* --- Боковая панель (Корзина / Избранное) --- */
+        .drawer-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 10, 12, 0.8); backdrop-filter: blur(5px); z-index: 2500;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s;
+        }
+        .drawer-overlay.active { opacity: 1; pointer-events: all; }
+
+        .drawer {
+            position: fixed; top: 0; right: -450px; width: 100%; max-width: 400px; height: 100%;
+            background: var(--drawer-bg); z-index: 2600; box-shadow: -10px 0 40px rgba(0,0,0,0.8);
+            display: flex; flex-direction: column; transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-left: 1px solid rgba(255,255,255,0.05);
+        }
+        .drawer.active { right: 0; }
+
+        .drawer-header { padding: 30px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; }
+        .drawer-title { font-family: 'Unbounded', sans-serif; font-size: 1.5rem; color: var(--text-color);}
+        .close-drawer { background: transparent; border: none; color: #aaa; cursor: pointer; font-size: 1.5rem; transition: color 0.3s; }
+        .close-drawer:hover { color: var(--accent-violet); }
+
+        .drawer-body { flex: 1; overflow-y: auto; padding: 20px 30px; display: flex; flex-direction: column; gap: 15px; }
+
+        .drawer-item { display: flex; gap: 15px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 15px; padding: 15px; align-items: center; transition: border-color 0.3s; }
+        .drawer-item:hover { border-color: var(--accent-violet); }
+        .drawer-item img { width: 60px; height: 80px; object-fit: cover; border-radius: 8px; }
+        .drawer-item-info { flex: 1; }
+        .drawer-item-title { font-family: 'Unbounded', sans-serif; font-size: 0.9rem; margin-bottom: 5px; color: var(--text-color); }
+        .drawer-item-price { color: var(--accent-violet); font-weight: 700; font-size: 0.9rem; }
+        .remove-item { background: rgba(255, 51, 102, 0.1); border: none; color: #FF3366; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; }
+        .remove-item:hover { background: #FF3366; color: white; }
+
+        .drawer-empty { color: #666; text-align: center; margin-top: 50px; font-size: 0.9rem; }
+
+        .drawer-footer { padding: 30px; border-top: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.3); }
+        .drawer-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-family: 'Unbounded', sans-serif; font-size: 1.2rem; color: var(--text-color); }
+        .drawer-total span:last-child { color: var(--accent-violet); }
+        .checkout-btn { width: 100%; padding: 15px; background: var(--accent-violet); color: var(--text-color); border: none; border-radius: 12px; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 1rem; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+        .checkout-btn:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(138, 43, 225, 0.4); }
+
+        /* --- Уведомления (Toasts) --- */
+        .toast-container { position: fixed; bottom: 30px; right: 30px; z-index: 3000; display: flex; flex-direction: column; gap: 10px; }
+        .toast {
+            background: rgba(21, 20, 32, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);
+            border-left: 4px solid var(--accent-violet); color: var(--text-color); padding: 15px 25px; border-radius: 10px;
+            font-size: 0.9rem; font-weight: 500; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            transform: translateX(120%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .toast.show { transform: translateX(0); }
+        .toast svg { color: var(--accent-violet); }
+
+        /* --- Главный Экран (Hero) --- */
+        .hero { height: 100vh; display: flex; align-items: center; justify-content: space-between; padding: 0 5vw; padding-top: 60px; position: relative; overflow: hidden; }
+        .hero::before {
+            content: ''; position: absolute; width: 800px; height: 800px; background: var(--accent-violet);
+            filter: blur(200px); top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.15; z-index: -1;
+            animation: pulseBg 6s infinite alternate;
+        }
+        .hero-text { z-index: 2; max-width: 50%; }
+        h1 { font-family: 'Unbounded', sans-serif; font-size: 4.5rem; line-height: 1.1; text-transform: uppercase; font-weight: 900; color: var(--text-color);}
+        .float-text { display: inline-block; animation: floatText 4s ease-in-out infinite; }
+        .float-text:nth-child(2) { animation-delay: 0.5s; color: var(--accent-violet); text-shadow: 0 0 20px rgba(138, 43, 225, 0.5); }
+        .float-text:nth-child(3) { animation-delay: 1s; }
+        .hero-subtitle { margin-top: 30px; font-size: 1.1rem; color: #aaa; max-width: 450px; line-height: 1.6; }
+        
+        .cta-btn {
+            display: inline-block; margin-top: 40px; padding: 18px 35px; background: var(--accent-violet); color: var(--text-color);
+            font-family: 'Unbounded', sans-serif; font-weight: 700; text-transform: uppercase; text-decoration: none;
+            border-radius: 50px; border: 1px solid transparent; cursor: pointer; font-size: 0.9rem;
+            position: relative; overflow: hidden;
+            transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .cta-btn:hover {
+            background: var(--accent-violet-hover);
+            box-shadow: 0 0 35px rgba(138, 43, 225, 0.7), 0 0 15px rgba(255, 255, 255, 0.2) inset;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        .cta-btn::after {
+            content: ''; position: absolute; top: 50%; left: 50%; width: 300px; height: 300px;
+            background: rgba(255, 255, 255, 0.15); border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0); opacity: 0;
+            transition: transform 0.5s ease-out, opacity 0.5s ease-out; pointer-events: none;
+        }
+        .cta-btn:active::after { transform: translate(-50%, -50%) scale(1); opacity: 1; transition: 0s; }
+        .cta-btn .arrow { display: inline-block; margin-left: 8px; transition: transform 0.3s ease; }
+        .cta-btn:hover .arrow { transform: translateX(5px); }
+
+        .hero-visual { position: relative; width: 50%; height: 80%; display: flex; align-items: center; justify-content: center; }
+        .glass-orb {
+            position: absolute; width: 450px; height: 450px; border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0));
+            backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 80px rgba(138, 43, 225, 0.2); z-index: 1; animation: rotateOrb 25s linear infinite;
+        }
+        .character-img {
+            position: absolute; max-height: 550px; z-index: 2; opacity: 0; transform: scale(0.9) translateY(30px);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); filter: drop-shadow(0 20px 40px rgba(0,0,0,0.9)); border-radius: 20px;
+        }
+        .character-img.active { opacity: 1; transform: scale(1) translateY(0); }
+
+        /* --- Общие стили секций --- */
+        .section-container { padding: 80px 5vw; scroll-margin-top: 100px; position: relative; }
+        
+        .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; flex-wrap: wrap; gap: 20px; position: relative; }
+        
+        .section-title {
+            font-family: 'Unbounded', sans-serif; font-size: 2.5rem; text-transform: uppercase; color: var(--text-color);
+            position: relative; display: inline-block; padding-left: 20px;
+        }
+        .section-title::before {
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px;
+            background: var(--accent-violet); box-shadow: 0 0 10px var(--accent-violet);
+        }
+        .section-title span { color: var(--accent-violet); }
+
+        .search-box {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 12px 20px;
+            border-radius: 30px; color: var(--text-color); font-size: 1rem; outline: none; width: 300px; transition: border-color 0.3s;
+        }
+        .search-box:focus { border-color: var(--accent-violet); box-shadow: 0 0 15px rgba(138, 43, 225, 0.2); }
+
+        .genre-filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 30px; }
+        .genre-btn {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #aaa;
+            padding: 8px 16px; border-radius: 50px; cursor: pointer; font-size: 0.85rem; transition: all 0.3s;
+        }
+        .genre-btn:hover { border-color: var(--text-color); color: var(--text-color); }
+        .genre-btn.active { background: var(--accent-violet); color: var(--text-color); border-color: var(--accent-violet); font-weight: 700; }
+
+        /* --- Сетка карточек (3D) --- */
+        .games-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; perspective: 1200px; }
+
+        .game-card {
+            background: var(--card-bg); border-radius: 20px; position: relative; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05); height: 380px; display: flex; flex-direction: column; justify-content: flex-end;
+            transform-style: preserve-3d; transition: border-color 0.3s, box-shadow 0.3s; will-change: transform;
+            cursor: pointer;
+        }
+        .game-card:hover { border-color: var(--accent-violet); box-shadow: 0 15px 35px rgba(138, 43, 225, 0.2); }
+
+        .game-card img.bg-img { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.4; z-index: 0; 
+            transform: translateZ(0px) scale(1); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s;
+            will-change: transform;
+        }
+        .game-card:hover img.bg-img { opacity: 0.6; transform: translateZ(-20px) scale(1.1); }
+        
+        .game-card::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(21, 20, 32, 0.98) 0%, rgba(21, 20, 32, 0.8) 30%, transparent 80%);
+            z-index: 1; transition: opacity 0.4s; pointer-events: none;
+        }
+
+        .card-content {
+            position: relative; z-index: 10; padding: 20px; width: 100%;
+            transform: translateZ(30px); transition: transform 0.4s; pointer-events: none;
+        }
+        .card-actions { pointer-events: auto; }
+        .game-card:hover .card-content { transform: translateZ(50px); }
+
+        .game-title { 
+            font-family: 'Unbounded', sans-serif; font-size: 1.1rem; margin-bottom: 5px; line-height: 1.2; color: var(--text-color);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.9); transition: text-shadow 0.3s;
+        }
+        .game-card:hover .game-title { text-shadow: 0 0 15px rgba(138, 43, 225, 0.6); }
+
+        .game-desc { 
+            font-size: 0.8rem; color: #aaa; margin-bottom: 15px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; 
+            overflow: hidden; line-height: 1.4; transition: opacity 0.3s;
+        }
+
+        .card-bottom { display: flex; justify-content: space-between; align-items: center; }
+        .price { color: var(--accent-violet); font-weight: 700; font-family: 'Unbounded', sans-serif; font-size: 1.1rem; }
+        .price.old-price { text-decoration: line-through; color: #666; font-size: 0.8rem; margin-right: 5px; }
+
+        .card-actions { display: flex; gap: 8px; }
+        .action-btn {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-color);
+            width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .action-btn:hover { background: var(--text-color); color: #000; }
+        .action-btn.cart-btn.active { background: var(--accent-violet); color: var(--text-color); border-color: var(--accent-violet); box-shadow: 0 0 10px var(--accent-violet);}
+        .action-btn.fav-btn.active { background: #FF3366; color: white; border-color: #FF3366; box-shadow: 0 0 10px #FF3366;}
+
+        /* --- Секция Распродажи --- */
+        .sale-banner {
+            background: linear-gradient(45deg, var(--dark-navy), var(--bg-color)); border: 1px solid var(--accent-violet);
+            border-radius: 30px; padding: 60px; display: flex; justify-content: space-between; align-items: center;
+            position: relative; overflow: hidden; box-shadow: 0 0 50px rgba(138, 43, 225, 0.15);
+        }
+        .sale-banner::before {
+            content: ''; position: absolute; width: 300px; height: 300px; background: var(--accent-violet);
+            filter: blur(120px); top: -50px; left: -50px; opacity: 0.5;
+        }
+        .sale-text h2 { font-family: 'Unbounded', sans-serif; font-size: 3.5rem; line-height: 1; margin-bottom: 15px; color: var(--text-color); text-shadow: 0 0 20px var(--accent-violet); }
+        .sale-text p { font-size: 1.2rem; color: #ccc; max-width: 400px; }
+        
+        .sale-timer { display: flex; gap: 15px; margin-top: 30px; }
+        .timer-block { background: rgba(10, 10, 12, 0.8); border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 15px; text-align: center; min-width: 80px; backdrop-filter: blur(5px);}
+        .timer-num { font-family: 'Unbounded', sans-serif; font-size: 2rem; font-weight: 700; color: var(--text-color); line-height: 1; }
+        .timer-label { font-size: 0.7rem; color: #888; text-transform: uppercase; margin-top: 5px; }
+        .timer-block.seconds .timer-num { color: var(--accent-violet); text-shadow: 0 0 10px rgba(138, 43, 225, 0.5); }
+
+        /* --- Секция Новости --- */
+        .news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .news-card {
+            background: var(--card-bg); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; overflow: hidden;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .news-card:hover { transform: translateY(-5px); border-color: var(--accent-violet); box-shadow: 0 10px 30px rgba(138, 43, 225, 0.1);}
+        .news-img { width: 100%; height: 200px; object-fit: cover; opacity: 0.7; }
+        .news-content { padding: 20px; }
+        .news-date { font-size: 0.8rem; color: var(--accent-violet); font-weight: 600; margin-bottom: 10px; display: block; }
+        .news-title { font-family: 'Unbounded', sans-serif; font-size: 1.2rem; margin-bottom: 10px; line-height: 1.3; color: var(--text-color);}
+        .news-desc { font-size: 0.9rem; color: #aaa; line-height: 1.5; }
+
+        /* --- Промокоды --- */
+        .promo-section { background: linear-gradient(180deg, var(--bg-color) 0%, var(--dark-navy) 100%); }
+        .promo-container {
+            display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1); padding: 50px; border-radius: 30px; backdrop-filter: blur(20px); overflow: hidden;
+        }
+        .promo-text h2 { font-family: 'Unbounded', sans-serif; font-size: 2.5rem; margin-bottom: 20px; color: var(--text-color);}
+        .promo-input-group { display: flex; gap: 10px; margin-top: 20px; }
+        .promo-input-group input {
+            background: rgba(10, 10, 12, 0.5); border: 1px solid rgba(255,255,255,0.2); padding: 15px 20px;
+            border-radius: 50px; color: var(--text-color); font-size: 1rem; outline: none; width: 300px;
+        }
+        .promo-input-group input:focus { border-color: var(--accent-violet); }
+
+        /* =========================================
+           МОДАЛЬНЫЕ ОКНА
+           ========================================= */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(10, 10, 12, 0.7);
+            backdrop-filter: blur(15px) saturate(150%);
+            z-index: 2000; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; 
+            transition: opacity 0.4s ease;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+
+        .modal-content {
+            background: var(--dark-navy); border: 1px solid rgba(255,255,255,0.1); border-radius: 30px; padding: 40px;
+            width: 100%; max-width: 400px; position: relative; 
+            opacity: 0;
+            transform: translateY(50px) scale(0.9) rotateX(10deg);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 80px rgba(0,0,0,0.9), 0 0 20px rgba(138, 43, 225, 0.2) inset;
+        }
+        .modal-overlay.active .modal-content { 
+            opacity: 1;
+            transform: translateY(0) scale(1) rotateX(0deg);
+        }
+        
+        .close-modal { position: absolute; top: 20px; right: 20px; background: transparent; border: none; color: #aaa; cursor: pointer; font-size: 1.5rem; z-index: 10; transition: all 0.3s; }
+        .close-modal:hover { color: var(--accent-violet); transform: rotate(90deg); }
+
+        .game-modal-content {
+            max-width: 900px; width: 90%; padding: 0; overflow: hidden;
+            display: flex; flex-direction: row;
+        }
+
+        .game-modal-img {
+            width: 40%; object-fit: cover; border-right: 1px solid rgba(255,255,255,0.05);
+            transform: scale(1.05); transition: transform 0.6s ease;
+        }
+        .modal-overlay.active .game-modal-img { transform: scale(1); }
+
+        .game-modal-info { width: 60%; padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+
+        .game-modal-title { font-family: 'Unbounded', sans-serif; font-size: 2.5rem; margin-bottom: 15px; line-height: 1.1; color: var(--text-color); }
+        .game-modal-desc { font-size: 1rem; color: #aaa; line-height: 1.6; margin-bottom: 30px; }
+        
+        .game-modal-price-row { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; }
+        .game-modal-price { font-family: 'Unbounded', sans-serif; font-size: 2rem; color: var(--accent-violet); font-weight: 700; }
+        .game-modal-old-price { text-decoration: line-through; color: #666; font-size: 1.2rem; }
+
+        .game-modal-actions { display: flex; gap: 15px; align-items: center; }
+        .game-modal-actions .action-btn { width: 50px; height: 50px; border-radius: 25px; }
+        .game-modal-actions .action-btn .svg-icon { width: 22px; height: 22px; }
+
+        .game-modal-buy-btn {
+            flex: 1; background: var(--accent-violet); color: var(--text-color); border: none;
+            border-radius: 50px; padding: 15px; font-family: 'Unbounded', sans-serif; font-weight: 700;
+            font-size: 1rem; cursor: pointer; position: relative; overflow: hidden;
+            transition: background 0.3s, box-shadow 0.3s, transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .game-modal-buy-btn:hover { background: var(--accent-violet-hover); box-shadow: 0 0 30px rgba(138, 43, 225, 0.6); }
+        .game-modal-buy-btn::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg); transition: left 0.6s ease;
+        }
+        .game-modal-buy-btn:hover::before { left: 150%; }
+        .game-modal-buy-btn:active { transform: scale(0.95) !important; }
+
+        /* Форма авторизации */
+        .modal-title { font-family: 'Unbounded', sans-serif; font-size: 1.8rem; margin-bottom: 10px; color: var(--text-color);}
+        .modal-subtitle { color: #888; margin-bottom: 30px; font-size: 0.9rem; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 0.8rem; color: #aaa; margin-bottom: 8px; text-transform: uppercase; }
+        .form-group input { width: 100%; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; color: var(--text-color); outline: none; }
+        .form-group input:focus { border-color: var(--accent-violet); }
+        .submit-btn { width: 100%; padding: 15px; background: var(--accent-violet); color: var(--text-color); border: none; border-radius: 12px; font-family: 'Unbounded', sans-serif; font-weight: 700; cursor: pointer; margin-top: 10px; transition: 0.2s;}
+        .submit-btn:hover { box-shadow: 0 0 20px rgba(138, 43, 225, 0.4); }
+        .toggle-auth { text-align: center; margin-top: 20px; font-size: 0.9rem; color: #888; }
+        .toggle-auth a { color: var(--accent-violet); text-decoration: none; cursor: pointer; }
+        .toggle-auth a:hover { text-decoration: underline; }
+
+        /* --- Анимации --- */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        @keyframes floatText { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        @keyframes pulseBg { 0% { opacity: 0.1; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0.2; transform: translate(-50%, -50%) scale(1.1); } }
+        @keyframes rotateOrb { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* --- Адаптив --- */
+        @media (max-width: 1200px) { .games-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 1024px) {
+            h1 { font-size: 3.5rem; }
+            .hero { flex-direction: column; justify-content: center; text-align: center; padding-top: 120px;}
+            .hero-text { max-width: 100%; margin-bottom: 50px; }
+            .hero-subtitle { margin: 20px auto; }
+            .hero-visual { width: 100%; height: 400px; }
+            .glass-orb { width: 300px; height: 300px; }
+            .character-img { max-height: 400px; }
+            .games-grid { grid-template-columns: repeat(2, 1fr); }
+            .sale-banner { flex-direction: column; text-align: center; gap: 30px; }
+            .news-grid { grid-template-columns: 1fr; }
+            .promo-container { flex-direction: column; text-align: center; gap: 30px; }
+            .promo-input-group { justify-content: center; }
+            nav { width: 95%; padding: 6px 12px; }
+            .nav-links-container { display: none; } 
+            
+            .game-modal-content { flex-direction: column; max-height: 90vh; overflow-y: auto; }
+            .game-modal-img { width: 100%; height: 250px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); }
+            .game-modal-info { width: 100%; padding: 30px; }
+        }
+        @media (max-width: 768px) {
+            .btn-login { display: none; }
+            .games-grid { grid-template-columns: 1fr; }
+            .section-header { flex-direction: column; align-items: flex-start; }
+            .search-box { width: 100%; }
+            .toast-container { left: 20px; right: 20px; bottom: 20px; }
+            .toast { transform: translateY(120%); }
+            .toast.show { transform: translateY(0); }
+            .drawer { width: 100%; max-width: 100%; right: -100%; }
+            
+            .sale-timer { justify-content: center; flex-wrap: wrap;}
+            .timer-block { min-width: 70px; padding: 10px; }
+            .timer-num { font-size: 1.5rem; }
+            
+            .game-modal-title { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- =========================================
+         ИГРОВОЙ ФОН (ДЕКОРАЦИИ)
+         ========================================= -->
+    <div class="bg-decorations">
+        <div class="bg-grid"></div>
+        <div class="bg-scanlines"></div>
+        
+        <!-- Игровые предметы на фоне -->
+        <!-- 1. Монета -->
+        <svg class="bg-icon icon-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M14.5 9.5c0-1.5-1-2.5-2.5-2.5s-2.5.5-2.5 2 1 2 2.5 2.5 2.5 1 2.5 2.5-1 2.5-2.5 2.5-2.5-.5-2.5-1.5"></path>
+            <line x1="12" y1="5" x2="12" y2="7"></line>
+            <line x1="12" y1="17" x2="12" y2="19"></line>
+        </svg>
+
+        <!-- 2. Аптечка -->
+        <svg class="bg-icon icon-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="8" width="18" height="12" rx="2"></rect>
+            <path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            <line x1="12" y1="12" x2="12" y2="16"></line>
+            <line x1="10" y1="14" x2="14" y2="14"></line>
+        </svg>
+
+        <!-- 3. Сундук -->
+        <svg class="bg-icon icon-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M4 10h16v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-9z"></path>
+            <path d="M4 10V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"></path>
+            <line x1="2" y1="10" x2="22" y2="10"></line>
+            <rect x="10" y="13" width="4" height="3" rx="1"></rect>
+        </svg>
+
+        <!-- 4. Магический кристалл -->
+        <svg class="bg-icon icon-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <polygon points="12 2 22 10 12 22 2 10"></polygon>
+            <line x1="2" y1="10" x2="22" y2="10"></line>
+            <line x1="12" y1="2" x2="12" y2="22"></line>
+        </svg>
+
+        <!-- 5. Картридж / Диск -->
+        <svg class="bg-icon icon-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+            <circle cx="12" cy="12" r="4"></circle>
+            <circle cx="12" cy="12" r="1"></circle>
+        </svg>
+
+        <!-- Генератор частиц (заполнится через JS) -->
+        <div id="particlesContainer"></div>
+    </div>
+
+    <!-- КАСТОМНЫЙ КУРСОР -->
+    <div class="custom-cursor" id="cursor"></div>
+    <div class="custom-cursor-follower" id="cursorFollower"></div>
+
+    <!-- Уведомления (Toasts) -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Боковая панель (Корзина / Избранное) -->
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+    <div class="drawer" id="drawer">
+        <div class="drawer-header">
+            <h2 class="drawer-title" id="drawerTitle">КОРЗИНА</h2>
+            <button class="close-drawer" id="closeDrawer">&times;</button>
+        </div>
+        <div class="drawer-body" id="drawerBody"></div>
+        <div class="drawer-footer" id="drawerFooter">
+            <div class="drawer-total">
+                <span>Итого:</span>
+                <span id="drawerTotalPrice">0 ₽</span>
+            </div>
+            <button class="checkout-btn" onclick="showToast('Переход к оплате...', 'fav')">ОФОРМИТЬ ЗАКАЗ</button>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО С ДЕТАЛЯМИ ИГРЫ -->
+    <div class="modal-overlay" id="gameModal">
+        <div class="modal-content game-modal-content">
+            <button class="close-modal" id="closeGameModalBtn">&times;</button>
+            <img src="" alt="Game Image" class="game-modal-img" id="modalGameImg">
+            <div class="game-modal-info">
+                <h2 class="game-modal-title" id="modalGameTitle">Название игры</h2>
+                <p class="game-modal-desc" id="modalGameDesc">Описание игры...</p>
+                <div class="game-modal-price-row">
+                    <span class="game-modal-price" id="modalGamePrice">0 ₽</span>
+                    <span class="game-modal-old-price" id="modalGameOldPrice"></span>
+                </div>
+                <div class="game-modal-actions">
+                    <button class="action-btn cart-btn" id="modalCartBtn" title="В корзину">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                    </button>
+                    <button class="action-btn fav-btn" id="modalFavBtn" title="В избранное">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                    </button>
+                    <button class="game-modal-buy-btn" id="modalBuyBtn">КУПИТЬ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно Авторизации -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeAuthBtn">&times;</button>
+            <h2 class="modal-title" id="modalTitle">ВХОД</h2>
+            <p class="modal-subtitle" id="modalSubtitle">Войдите в свой аккаунт FUTURA</p>
+            
+            <form id="authForm" onsubmit="event.preventDefault();">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" placeholder="your@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Пароль</label>
+                    <input type="password" placeholder="••••••••" required>
+                </div>
+                <div class="form-group" id="confirmPasswordGroup" style="display: none;">
+                    <label>Повторите пароль</label>
+                    <input type="password" placeholder="••••••••">
+                </div>
+                <button type="submit" class="submit-btn" id="submitAuthBtn">ВОЙТИ</button>
+            </form>
+            <div class="toggle-auth">
+                <span id="toggleText">Нет аккаунта?</span> <a id="toggleAuthMode">Зарегистрироваться</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Навигация -->
+    <nav>
+        <div class="logo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">FUTURA<span>GAMES</span></div>
+        
+        <div class="nav-links-container">
+            <div class="nav-indicator" id="navIndicator"></div>
+            <div class="nav-links">
+                <a href="#hero" class="nav-link">Главная</a>
+                <a href="#sale" class="nav-link">Распродажа</a>
+                <a href="#popular" class="nav-link">Популярное</a>
+                <a href="#catalog" class="nav-link">Каталог</a>
+                <a href="#news" class="nav-link">Новости</a>
+            </div>
+        </div>
+
+        <div class="user-actions">
+            <div class="icon-btn" id="cart-icon" title="Корзина" onclick="openDrawer('cart')">
+                <svg class="svg-icon" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                <span class="badge" id="cart-count">0</span>
+            </div>
+            <div class="icon-btn" id="fav-icon" title="Избранное" onclick="openDrawer('fav')">
+                <svg class="svg-icon" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                <span class="badge" id="fav-count">0</span>
+            </div>
+            <button class="btn-login" id="openAuthBtn">ВХОД</button>
+        </div>
+    </nav>
+
+    <!-- Главный экран -->
+    <section id="hero" class="hero">
+        <div class="hero-text">
+            <h1>
+                <span class="float-text">ИГРАЙ</span><br>
+                <span class="float-text">В</span><br>
+                <span class="float-text">БУДУЩЕЕ</span>
+            </h1>
+            <p class="hero-subtitle">
+                Твой портал в мир Steam. Более 35 хитов, эксклюзивные релизы и лучшие цены. Погрузись в киберпанк.
+            </p>
+            <a href="#sale" class="cta-btn" id="saleBtn">
+                К распродаже 
+                <span class="arrow">→</span>
+            </a>
+        </div>
+        
+        <div class="hero-visual">
+            <div class="glass-orb"></div>
+            <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/library_600x900_2x.jpg" alt="Cyberpunk" class="character-img active">
+            <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/library_600x900_2x.jpg" alt="Elden Ring" class="character-img">
+            <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/271590/library_600x900_2x.jpg" alt="GTA V" class="character-img">
+        </div>
+    </section>
+
+    <!-- Распродажа -->
+    <section id="sale" class="section-container reveal" style="padding-top: 20px;">
+        <div class="sale-banner">
+            <div class="sale-text">
+                <h2>СУМАСШЕДШАЯ<br>РАСПРОДАЖА</h2>
+                <p>Скидки до 80% на хиты. Успей пополнить библиотеку до конца недели!</p>
+                <div class="sale-timer">
+                    <div class="timer-block"><div class="timer-num" id="days">02</div><div class="timer-label">Дня</div></div>
+                    <div class="timer-block"><div class="timer-num" id="hours">14</div><div class="timer-label">Часов</div></div>
+                    <div class="timer-block"><div class="timer-num" id="minutes">35</div><div class="timer-label">Минут</div></div>
+                    <div class="timer-block seconds"><div class="timer-num" id="seconds">00</div><div class="timer-label">Секунд</div></div>
+                </div>
+            </div>
+            <div style="color: var(--accent-violet);">
+                <svg width="150" height="150" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 30px rgba(138, 43, 225, 0.6)); animation: floatText 4s infinite;">
+                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- Популярное сейчас -->
+    <section id="popular" class="section-container">
+        <div class="section-header reveal">
+            <h2 class="section-title">ПОПУЛЯРНОЕ <span>СЕЙЧАС</span></h2>
+        </div>
+        <div class="games-grid" id="popular-grid"></div>
+    </section>
+
+    <!-- Каталог -->
+    <section id="catalog" class="section-container" style="background: rgba(255,255,255,0.01);">
+        <div class="section-header reveal">
+            <h2 class="section-title">ПОЛНЫЙ <span>КАТАЛОГ</span></h2>
+            <input type="text" id="searchInput" class="search-box" placeholder="Поиск игры...">
+        </div>
+        
+        <div class="genre-filters reveal">
+            <button class="genre-btn active" data-genre="all">Все игры</button>
+            <button class="genre-btn" data-genre="rpg">RPG</button>
+            <button class="genre-btn" data-genre="shooter">Шутеры</button>
+            <button class="genre-btn" data-genre="action">Экшн</button>
+            <button class="genre-btn" data-genre="survival">Выживание</button>
+            <button class="genre-btn" data-genre="racing">Гонки</button>
+            <button class="genre-btn" data-genre="sports">Спорт</button>
+            <button class="genre-btn" data-genre="horror">Хорроры</button>
+        </div>
+
+        <div class="games-grid" id="catalog-grid"></div>
+    </section>
+
+    <!-- Новости -->
+    <section id="news" class="section-container">
+        <div class="section-header reveal">
+            <h2 class="section-title">НОВОСТИ <span>ИНДУСТРИИ</span></h2>
+        </div>
+        <div class="news-grid reveal">
+            <div class="news-card">
+                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop" alt="News 1" class="news-img">
+                <div class="news-content">
+                    <span class="news-date">07 Ноября 2026</span>
+                    <h3 class="news-title">Анонс новой части Cyberpunk</h3>
+                    <p class="news-desc">CD Projekt RED подтвердила разработку сиквела. Действие развернется в новом городе.</p>
+                </div>
+            </div>
+            <div class="news-card">
+                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=800&auto=format&fit=crop" alt="News 2" class="news-img">
+                <div class="news-content">
+                    <span class="news-date">06 Ноября 2026</span>
+                    <h3 class="news-title">Steam обновляет политику возвратов</h3>
+                    <p class="news-desc">Теперь вернуть игру можно будет даже после 3 часов игры, если она не запускается.</p>
+                </div>
+            </div>
+            <div class="news-card">
+                <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=800&auto=format&fit=crop" alt="News 3" class="news-img">
+                <div class="news-content">
+                    <span class="news-date">05 Ноября 2026</span>
+                    <h3 class="news-title">Зимняя распродажа стартует раньше</h3>
+                    <p class="news-desc">Valve объявила даты главного события года. Готовьте кошельки, скидки будут рекордными.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Промокоды -->
+    <section id="promo" class="section-container promo-section reveal">
+        <div class="promo-container">
+            <div class="promo-text">
+                <h2>ЕСТЬ ПРОМОКОД?</h2>
+                <p>Введи его здесь и получи скидку до 50% на следующий заказ.</p>
+                <div class="promo-input-group">
+                    <input type="text" placeholder="ВВЕДИ КОД...">
+                    <button class="cta-btn" style="padding: 15px 30px; font-size: 0.9rem;" onclick="showToast('Промокод применен!', 'fav')">Применить</button>
+                </div>
+            </div>
+            <div style="color: var(--accent-violet); opacity: 0.8;">
+                <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 20px rgba(138, 43, 225, 0.5)); animation: floatText 4s infinite;">
+                    <rect x="3" y="8" width="18" height="4" rx="1"></rect>
+                    <path d="M12 8v13"></path>
+                    <path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"></path>
+                    <path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"></path>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // --- 0. ГЕНЕРАЦИЯ ЧАСТИЦ НА ФОНЕ ---
+        const particlesContainer = document.getElementById('particlesContainer');
+        const particleCount = 30;
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            const size = Math.random() * 3 + 2;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            particle.style.left = `${Math.random() * 100}vw`;
+            particle.style.top = `${Math.random() * 100}vh`;
+            
+            const duration = Math.random() * 15 + 10;
+            particle.style.animationDuration = `${duration}s`;
+            
+            particle.style.animationDelay = `${Math.random() * 10}s`;
+            
+            particlesContainer.appendChild(particle);
+        }
+
+
+        // --- 1. КАСТОМНЫЙ КУРСОР ---
+        const cursor = document.getElementById('cursor');
+        const cursorFollower = document.getElementById('cursorFollower');
+        
+        let mouseX = 0, mouseY = 0;
+        let followerX = 0, followerY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursor.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+        });
+
+        function animateFollower() {
+            followerX += (mouseX - followerX) * 0.15;
+            followerY += (mouseY - followerY) * 0.15;
+            cursorFollower.style.transform = `translate(${followerX}px, ${followerY}px) translate(-50%, -50%)`;
+            requestAnimationFrame(animateFollower);
+        }
+        animateFollower();
+
+        const clickableElements = document.querySelectorAll('a, button, input, .game-card, .action-btn, .nav-links a, .genre-btn');
+        clickableElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.classList.add('hover-active');
+                cursorFollower.classList.add('hover-active');
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hover-active');
+                cursorFollower.classList.remove('hover-active');
+            });
+        });
+
+
+        // --- 2. БАЗА ДАННЫХ ---
+        const gamesData = [
+            { id: 1, title: "Elden Ring", desc: "Эпическая RPG в открытом мире от FromSoftware.", longDesc: "Восстань, Погасший, и стань Повелителем Элдена. Исследуй Межземелье — огромный открытый мир, полный опасностей, тайн и могущественных боссов. Создай своего персонажа и выбери свой путь.", price: "4 999 ₽", priceNum: 4999, oldPrice: "5 999 ₽", img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg", popular: true, genre: "rpg" },
+            { id: 2, title: "Cyberpunk 2077", desc: "Ролевой экшн в мегаполисе Найт-Сити.", longDesc: "Найт-Сити — одержимый властью, гламуром и модификациями тела мегаполис. Ты играешь за наёмника V, ищущего уникальный имплант, который подарит бессмертие. Выбирай, кем стать.", price: "2 999 ₽", priceNum: 2999, oldPrice: "3 999 ₽", img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg", popular: true, genre: "rpg" },
+            { id: 3, title: "Red Dead Redemption 2", desc: "Вестерн-экшн о банде на закате Дикого Запада.", longDesc: "Артур Морган и банда Ван дер Линде — преступники, вынужденные бежать от закона. Эпическая история о верности, предательстве и искуплении на закате эпохи Дикого Запада.", price: "3 499 ₽", priceNum: 3499, oldPrice: "4 499 ₽", img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/header.jpg", popular: true, genre: "action" },
+            { id: 4, title: "GTA V", desc: "Криминальная сага в Лос-Сантосе.", longDesc: "Три совершенно разных преступника объединяются, чтобы провернуть серию дерзких ограблений в Лос-Сантосе. Погрузись в бездонный мир открытого города.", price: "1 499 ₽", priceNum: 1499, oldPrice: "2 000 ₽", img: "https://cdn.cloudflare.steamstatic.com/steam/apps/271590/header.jpg", popular: true, genre: "action" },
+            { id: 5, title: "Baldur's Gate 3", desc: "Легендарная RPG по правилам D&D.", longDesc: "Вернись в Забытые Королевства в этой эпической RPG. Собери отряд и вернись в мир, охваченный войной. Свобода выбора и последствия твоих решений ждут тебя.", price: "4 499 ₽", priceNum: 4499, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1086940/header.jpg", popular: true, genre: "rpg" },
+            { id: 6, title: "The Witcher 3", desc: "Приключения Геральта из Ривии.", longDesc: "Стань охотником на чудовищ Геральтом из Ривии. Исследуй огромный открытый мир, полный интриг, магии и кровожадных монстров.", price: "1 999 ₽", priceNum: 1999, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/292030/header.jpg", popular: true, genre: "rpg" },
+            { id: 7, title: "Hogwarts Legacy", desc: "Погрузитесь в мир магии Хогвартса.", longDesc: "Твоя магическая история начинается в XIX веке. Исследуй Хогвартс и его окрестности, освой магию и раскрой древнюю тайну.", price: "3 999 ₽", priceNum: 3999, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/990080/header.jpg", popular: true, genre: "rpg" },
+            { id: 8, title: "God of War", desc: "Кратос и Атрей в мире нордических мифов.", longDesc: "Кратос, бывший призрак Спарты, живет в мире северных богов. Он должен защитить своего сына Атрея и отправиться в опасное путешествие по девяти мирам.", price: "2 499 ₽", priceNum: 2499, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1593500/header.jpg", popular: true, genre: "action" },
+            { id: 9, title: "Resident Evil 4 Remake", desc: "Леон Кеннеди против культистов.", longDesc: "Спецагент Леон Кеннеди отправляется в отдаленную европейскую деревню, чтобы спасти дочь президента. Его ждет кошмар, полный сектантов и мутантов.", price: "3 999 ₽", priceNum: 3999, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/2050650/header.jpg", popular: false, genre: "horror" },
+            { id: 10, title: "Terraria", desc: "Песочница с исследованием и битвами.", longDesc: "Копай, сражайся, исследуй, строй! В этом 2D-мире у тебя есть бесконечные возможности для приключений и создания своего собственного мира.", price: "399 ₽", priceNum: 399, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/105600/header.jpg", popular: false, genre: "survival" },
+            { id: 11, title: "Stardew Valley", desc: "Уютный симулятор фермы.", longDesc: "Унаследовал старую ферму? Преврати зарастающие поля в процветающее хозяйство, заведи друзей в городе и найди свою любовь.", price: "499 ₽", priceNum: 499, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/413150/header.jpg", popular: false, genre: "rpg" },
+            { id: 12, title: "Hades", desc: "Рогалик-экшн о побеге из подземного царства.", longDesc: "Брось вызов самому богу смерти! Пробивайся через подземный мир, используя дары богов Олимпа, и попытайся сбежать из царства Аида.", price: "999 ₽", priceNum: 999, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1145360/header.jpg", popular: false, genre: "action" },
+            { id: 13, title: "Portal 2", desc: "Головоломка с порталами.", longDesc: "Вернись в лабораторию Aperture Science. Решай сложные головоломки с помощью портальной пушки и слушай едкий юмор GLaDOS.", price: "299 ₽", priceNum: 299, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/620/header.jpg", popular: false, genre: "action" },
+            { id: 14, title: "Left 4 Dead 2", desc: "Кооперативный шутер о зомби.", longDesc: "Четверо выживших пробиваются через города, кишащие зомби. Кооперируйся с друзьями, чтобы пережить эту эпидемию.", price: "399 ₽", priceNum: 399, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/550/header.jpg", popular: false, genre: "shooter" },
+            { id: 15, title: "Counter-Strike 2", desc: "Легендарный тактический шутер.", longDesc: "Новое поколение легендарной игры. Улучшенная графика, физика дыма и обновленные карты. Сражайся в командных матчах 5 на 5.", price: "0 ₽", priceNum: 0, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/730/header.jpg", popular: true, genre: "shooter" },
+            { id: 16, title: "Dota 2", desc: "MOBA с бесконечным потолком мастерства.", longDesc: "Сражайся в команде из пяти человек, чтобы уничтожить Древнего противника. Более ста героев, бесконечные стратегии и высокое мастерство.", price: "0 ₽", priceNum: 0, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/570/header.jpg", popular: false, genre: "rpg" },
+            { id: 17, title: "PUBG: BATTLEGROUNDS", desc: "Королевская битва.", longDesc: "Высадись на остров, найди оружие и снаряжение, и сражайся за первое место. Остаться должен только один.", price: "0 ₽", priceNum: 0, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/578080/header.jpg", popular: false, genre: "shooter" },
+            { id: 18, title: "Apex Legends", desc: "Динамичный шутер с уникальными персонажами.", longDesc: "Легенды с уникальными способностями сражаются за славу в Apex Games. Выбери своего героя и покажи, на что способен.", price: "0 ₽", priceNum: 0, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1172470/header.jpg", popular: false, genre: "shooter" },
+            { id: 19, title: "Rust", desc: "Хардкорный симулятор выживания.", longDesc: "Проснись на пустом острове с камнем и факелом. Строй базу, собирай ресурсы, крафти оружие и защищайся от других игроков.", price: "1 499 ₽", priceNum: 1499, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/252490/header.jpg", popular: false, genre: "survival" },
+            { id: 20, title: "Valheim", desc: "Выживание в мире викингов.", longDesc: "Исследуй десятый мир скандинавской мифологии. Строй, крафти и сражайся с древними богами и монстрами в этом суровом мире.", price: "899 ₽", priceNum: 899, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/892970/header.jpg", popular: false, genre: "survival" },
+            { id: 21, title: "Sekiro", desc: "Суровый экшн о самурае.", longDesc: "Стань одноруким волком и верни свою честь. Сражайся с могущественными врагами в Японии эпохи Сэнгоку.", price: "2 999 ₽", priceNum: 2999, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/814380/header.jpg", popular: false, genre: "action" },
+            { id: 22, title: "Dark Souls III", desc: "Классика жанра souls-like.", longDesc: "Мир погрузился во тьму. Восстань, пепельный, и брось вызов Повелителям Пепла в этом беспощадном экшене.", price: "2 499 ₽", priceNum: 2499, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/374320/header.jpg", popular: false, genre: "rpg" },
+            { id: 23, title: "DOOM Eternal", desc: "Молниеносный шутер.", longDesc: "Ад вторгся на Землю. Уничтожай демонов в безумном ритме под тяжелый металл. Ты — Палач Рока.", price: "1 999 ₽", priceNum: 1999, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/782330/header.jpg", popular: false, genre: "shooter" },
+            { id: 24, title: "Forza Horizon 5", desc: "Открытый мир Мексики и лучшие гонки.", longDesc: "Исследуй яркий и красочный мир Мексики за рулем лучших автомобилей. Гоняй, трюкачь и наслаждайся пейзажами.", price: "3 499 ₽", priceNum: 3499, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1551360/header.jpg", popular: false, genre: "racing" },
+            { id: 25, title: "FIFA 23", desc: "Самый популярный футбольный симулятор.", longDesc: "Играй в футбол с лучшими командами и игроками мира. Новые режимы, обновленная физика и графика.", price: "2 999 ₽", priceNum: 2999, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1811260/header.jpg", popular: false, genre: "sports" },
+            { id: 26, title: "EA Sports FC 24", desc: "Новое имя легендарного футбола.", longDesc: "Новое поколение футбольных симуляторов. Технология HyperMotionV, реалистичная анимация и множество режимов.", price: "4 999 ₽", priceNum: 4999, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/2195250/header.jpg", popular: false, genre: "sports" },
+            { id: 27, title: "Rainbow Six Siege", desc: "Тактический шутер 5 на 5.", longDesc: "Элитный отряд спецназа сражается с террористами. Разрушай стены, используй гаджеты и работай в команде.", price: "999 ₽", priceNum: 999, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/359550/header.jpg", popular: false, genre: "shooter" },
+            { id: 28, title: "Dead by Daylight", desc: "Асимметричный хоррор.", longDesc: "Один убийца против четырех выживших. Прячься, убегай или сражайся в этом кошмарном мире.", price: "799 ₽", priceNum: 799, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/381210/header.jpg", popular: false, genre: "horror" },
+            { id: 29, title: "Phasmophobia", desc: "Кооперативная охота за призраками.", longDesc: "Собери команду охотников за призраками и отправляйся в заброшенные места. Используй оборудование, чтобы найти доказательства и выжить.", price: "499 ₽", priceNum: 499, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/739630/header.jpg", popular: false, genre: "horror" },
+            { id: 30, title: "Among Us", desc: "Найди предателя на корабле.", longDesc: "Играй с друзьями на космическом корабле. Один из вас — предатель. Выполняй задания или убивай, чтобы победить.", price: "199 ₽", priceNum: 199, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/945360/header.jpg", popular: false, genre: "action" },
+            { id: 31, title: "Fall Guys", desc: "Веселые королевские битвы.", longDesc: "Участвуй в безумных испытаниях с желатиновыми человечками. Пробивайся к финишу и стань победителем.", price: "0 ₽", priceNum: 0, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1097150/header.jpg", popular: false, genre: "action" },
+            { id: 32, title: "Rocket League", desc: "Футбол на машинах.", longDesc: "Смесь футбола и гонок. Управляй машиной и забивай голы, используя реактивное ускорение и трюки.", price: "0 ₽", priceNum: 0, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/252950/header.jpg", popular: false, genre: "sports" },
+            { id: 33, title: "It Takes Two", desc: "Лучшая кооперативная игра для двоих.", longDesc: "Отправляйся в безумное приключение вместе с другом. Вас ждут головоломки и мини-игры в мире, полном сюрпризов.", price: "1 999 ₽", priceNum: 1999, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1426210/header.jpg", popular: false, genre: "action" },
+            { id: 34, title: "Detroit: Become Human", desc: "Интерактивное кино о восстании андроидов.", longDesc: "Три истории андроидов в мире, где они стали почти как люди. Твои решения определят их судьбу и будущее человечества.", price: "1 499 ₽", priceNum: 1499, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1222140/header.jpg", popular: false, genre: "action" },
+            { id: 35, title: "Death Stranding", desc: "Уникальный опыт от Хидео Кодзимы.", longDesc: "Сэм Портер Бриджес должен доставить припасы в разрушенную Америку. Путешествуй по миру, полному опасностей и загадок.", price: "2 499 ₽", priceNum: 2499, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1190460/header.jpg", popular: false, genre: "action" },
+            { id: 36, title: "Subnautica", desc: "Выживание на океанической планете.", longDesc: "Твой корабль потерпел крушение на планете, покрытой океаном. Исследуй глубины, собирай ресурсы и строй базу, чтобы выжить.", price: "899 ₽", priceNum: 899, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/264710/header.jpg", popular: false, genre: "survival" },
+        ];
+
+        // --- 3. СОСТОЯНИЕ ---
+        let cart = [];
+        let favorites = [];
+        let currentGenre = 'all';
+        let searchQuery = '';
+        let currentDrawerMode = 'cart';
+        let currentGameId = null;
+
+        // --- 4. УВЕДОМЛЕНИЯ ---
+        function showToast(message, type = 'cart') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type === 'fav' ? 'fav' : ''}`;
+            
+            const icon = type === 'fav' 
+                ? `<svg class="svg-icon" viewBox="0 0 24 24" style="width: 18px; height: 18px;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>`
+                : `<svg class="svg-icon" viewBox="0 0 24 24" style="width: 18px; height: 18px;"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>`;
+
+            toast.innerHTML = `${icon} ${message}`;
+            container.appendChild(toast);
+
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 400);
+            }, 3000);
+        }
+
+        // --- 5. БОКОВАЯ ПАНЕЛЬ ---
+        const drawer = document.getElementById('drawer');
+        const drawerOverlay = document.getElementById('drawerOverlay');
+        const drawerTitle = document.getElementById('drawerTitle');
+        const drawerBody = document.getElementById('drawerBody');
+        const drawerFooter = document.getElementById('drawerFooter');
+        const drawerTotalPrice = document.getElementById('drawerTotalPrice');
+
+        window.openDrawer = (mode) => {
+            currentDrawerMode = mode;
+            drawerTitle.textContent = mode === 'cart' ? 'КОРЗИНА' : 'ИЗБРАННОЕ';
+            drawerFooter.style.display = mode === 'cart' ? 'block' : 'none';
+            renderDrawer();
+            drawer.classList.add('active');
+            drawerOverlay.classList.add('active');
+        };
+
+        function closeDrawer() {
+            drawer.classList.remove('active');
+            drawerOverlay.classList.remove('active');
+        }
+
+        document.getElementById('closeDrawer').addEventListener('click', closeDrawer);
+        drawerOverlay.addEventListener('click', closeDrawer);
+
+        function renderDrawer() {
+            const items = currentDrawerMode === 'cart' ? cart : favorites;
+            drawerBody.innerHTML = '';
+            
+            if (items.length === 0) {
+                drawerBody.innerHTML = `<div class="drawer-empty">Здесь пока пусто...</div>`;
+                drawerTotalPrice.textContent = '0 ₽';
+                return;
+            }
+
+            let total = 0;
+            items.forEach(id => {
+                const game = gamesData.find(g => g.id === id);
+                total += game.priceNum;
+
+                const itemHTML = `
+                    <div class="drawer-item">
+                        <img src="${game.img}" alt="${game.title}">
+                        <div class="drawer-item-info">
+                            <div class="drawer-item-title">${game.title}</div>
+                            <div class="drawer-item-price">${game.price}</div>
+                        </div>
+                        <button class="remove-item" onclick="removeFromDrawer(${game.id})">
+                            <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        </button>
+                    </div>
+                `;
+                drawerBody.innerHTML += itemHTML;
+            });
+
+            if (currentDrawerMode === 'cart') {
+                drawerTotalPrice.textContent = `${total.toLocaleString('ru-RU')} ₽`;
+            }
+        }
+
+        window.removeFromDrawer = (id) => {
+            if (currentDrawerMode === 'cart') {
+                toggleCart(id, '', null, true);
+            } else {
+                toggleFav(id, '', null, true);
+            }
+            renderDrawer();
+        };
+
+        // --- 6. РЕНДЕР КАРТОЧЕК ---
+        const createCardHTML = (game) => {
+            const isInCart = cart.includes(game.id);
+            const isInFav = favorites.includes(game.id);
+            
+            const cartIcon = `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>`;
+            const favIcon = `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>`;
+
+            const priceHTML = game.oldPrice 
+                ? `<div><span class="price old-price">${game.oldPrice}</span><br><span class="price">${game.price}</span></div>`
+                : `<span class="price">${game.price}</span>`;
+
+            return `
+                <div class="game-card reveal" data-id="${game.id}" onclick="openGameModal(${game.id})" onmousemove="handleTilt(event)" onmouseleave="resetTilt(event)">
+                    <img src="${game.img}" alt="${game.title}" class="bg-img" loading="lazy">
+                    <div class="card-content">
+                        <h3 class="game-title">${game.title}</h3>
+                        <p class="game-desc">${game.desc}</p>
+                        <div class="card-bottom">
+                            ${priceHTML}
+                            <div class="card-actions">
+                                <button class="action-btn cart-btn ${isInCart ? 'active' : ''}" onclick="event.stopPropagation(); toggleCart(${game.id}, '${game.title}', event)" title="В корзину">
+                                    ${cartIcon}
+                                </button>
+                                <button class="action-btn fav-btn ${isInFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFav(${game.id}, '${game.title}', event)" title="В избранное">
+                                    ${favIcon}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        };
+
+        function renderGrids() {
+            const popularGrid = document.getElementById('popular-grid');
+            const catalogGrid = document.getElementById('catalog-grid');
+            
+            const filteredGames = gamesData.filter(game => {
+                const matchesSearch = game.title.toLowerCase().includes(searchQuery.toLowerCase());
+                const matchesGenre = currentGenre === 'all' || game.genre === currentGenre;
+                return matchesSearch && matchesGenre;
+            });
+
+            const popularToRender = filteredGames.filter(g => g.popular);
+            popularGrid.innerHTML = popularToRender.map(createCardHTML).join('');
+            catalogGrid.innerHTML = filteredGames.map(createCardHTML).join('');
+
+            setTimeout(() => {
+                document.querySelectorAll('.reveal').forEach(el => {
+                    if(el.getBoundingClientRect().top < window.innerHeight) el.classList.add('active');
+                });
+            }, 50);
+        }
+
+        // --- 7. 3D ЭФФЕКТ ---
+        window.handleTilt = (event) => {
+            const card = event.currentTarget;
+            const rect = card.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = ((y - centerY) / centerY) * -10; 
+            const rotateY = ((x - centerX) / centerX) * 10;
+
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+        };
+
+        window.resetTilt = (event) => {
+            const card = event.currentTarget;
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+        };
+
+
+        // --- 8. КОРЗИНА И ИЗБРАННОЕ ---
+        function updateBadges() {
+            const cartCount = document.getElementById('cart-count');
+            const favCount = document.getElementById('fav-count');
+            cartCount.textContent = cart.length;
+            favCount.textContent = favorites.length;
+            
+            cartCount.classList.add('pop');
+            favCount.classList.add('pop');
+            setTimeout(() => {
+                cartCount.classList.remove('pop');
+                favCount.classList.remove('pop');
+            }, 300);
+        }
+
+        window.toggleCart = (id, title, event, fromDrawer = false) => {
+            const index = cart.indexOf(id);
+            
+            if (index === -1) {
+                cart.push(id);
+                if (event) event.target.closest('button').classList.add('active');
+                if (!fromDrawer) showToast(`"${title}" добавлена в корзину`, 'cart');
+            } else {
+                cart.splice(index, 1);
+                if (event) event.target.closest('button').classList.remove('active');
+                if (!fromDrawer) showToast(`"${title}" удалена из корзины`, 'cart');
+            }
+            
+            updateBadges();
+            if (drawer.classList.contains('active') && currentDrawerMode === 'cart') renderDrawer();
+            if(!fromDrawer) renderGrids();
+            
+            if (currentGameId === id) {
+                const modalCartBtn = document.getElementById('modalCartBtn');
+                if (cart.includes(id)) modalCartBtn.classList.add('active');
+                else modalCartBtn.classList.remove('active');
+            }
+        };
+
+        window.toggleFav = (id, title, event, fromDrawer = false) => {
+            const index = favorites.indexOf(id);
+            
+            if (index === -1) {
+                favorites.push(id);
+                if (event) event.target.closest('button').classList.add('active');
+                if (!fromDrawer) showToast(`"${title}" в избранном`, 'fav');
+            } else {
+                favorites.splice(index, 1);
+                if (event) event.target.closest('button').classList.remove('active');
+                if (!fromDrawer) showToast(`"${title}" удалена из избранного`, 'fav');
+            }
+            
+            updateBadges();
+            if (drawer.classList.contains('active') && currentDrawerMode === 'fav') renderDrawer();
+            if(!fromDrawer) renderGrids();
+            
+            if (currentGameId === id) {
+                const modalFavBtn = document.getElementById('modalFavBtn');
+                if (favorites.includes(id)) modalFavBtn.classList.add('active');
+                else modalFavBtn.classList.remove('active');
+            }
+        };
+
+        // --- 9. ПОИСК И ЖАНРЫ ---
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            renderGrids();
+        });
+
+        document.querySelectorAll('.genre-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.genre-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentGenre = e.target.dataset.genre;
+                renderGrids();
+            });
+        });
+
+        // --- 10. МОДАЛЬНОЕ ОКНО ИГРЫ ---
+        const gameModal = document.getElementById('gameModal');
+        const closeGameModalBtn = document.getElementById('closeGameModalBtn');
+        const modalBuyBtn = document.getElementById('modalBuyBtn');
+
+        window.openGameModal = (id) => {
+            const game = gamesData.find(g => g.id === id);
+            if (!game) return;
+            currentGameId = id;
+
+            document.getElementById('modalGameImg').src = game.img;
+            document.getElementById('modalGameTitle').textContent = game.title;
+            document.getElementById('modalGameDesc').textContent = game.longDesc || game.desc;
+            document.getElementById('modalGamePrice').textContent = game.price;
+            
+            const oldPriceEl = document.getElementById('modalGameOldPrice');
+            if (game.oldPrice) {
+                oldPriceEl.textContent = game.oldPrice;
+                oldPriceEl.style.display = 'block';
+            } else {
+                oldPriceEl.style.display = 'none';
+            }
+
+            const modalCartBtn = document.getElementById('modalCartBtn');
+            const modalFavBtn = document.getElementById('modalFavBtn');
+            
+            if (cart.includes(id)) modalCartBtn.classList.add('active');
+            else modalCartBtn.classList.remove('active');
+
+            if (favorites.includes(id)) modalFavBtn.classList.add('active');
+            else modalFavBtn.classList.remove('active');
+
+            modalCartBtn.onclick = (e) => toggleCart(id, game.title, e);
+            modalFavBtn.onclick = (e) => toggleFav(id, game.title, e);
+
+            gameModal.classList.add('active');
+        };
+
+        closeGameModalBtn.addEventListener('click', () => {
+            gameModal.classList.remove('active');
+            currentGameId = null;
+        });
+
+        gameModal.addEventListener('click', (e) => {
+            if (e.target === gameModal) {
+                gameModal.classList.remove('active');
+                currentGameId = null;
+            }
+        });
+
+        modalBuyBtn.addEventListener('mousemove', (e) => {
+            const rect = modalBuyBtn.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            modalBuyBtn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px) scale(1.05)`;
+        });
+
+        modalBuyBtn.addEventListener('mouseleave', () => {
+            modalBuyBtn.style.transform = `translate(0px, 0px) scale(1)`;
+        });
+
+        modalBuyBtn.addEventListener('click', () => {
+            const game = gamesData.find(g => g.id === currentGameId);
+            if (game) {
+                if (!cart.includes(game.id)) {
+                    cart.push(game.id);
+                    updateBadges();
+                    renderGrids();
+                }
+                showToast(`"${game.title}" успешно куплена!`, 'fav');
+                gameModal.classList.remove('active');
+                currentGameId = null;
+            }
+        });
+
+        // Закрытие по Esc
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (gameModal.classList.contains('active')) {
+                    gameModal.classList.remove('active');
+                    currentGameId = null;
+                }
+                if (authModal.classList.contains('active')) {
+                    authModal.classList.remove('active');
+                }
+                closeDrawer();
+            }
+        });
+
+
+        // --- 11. АВТОРИЗАЦИЯ ---
+        const authModal = document.getElementById('authModal');
+        const openAuthBtn = document.getElementById('openAuthBtn');
+        const closeAuthBtn = document.getElementById('closeAuthBtn');
+        const toggleAuthMode = document.getElementById('toggleAuthMode');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalSubtitle = document.getElementById('modalSubtitle');
+        const submitAuthBtn = document.getElementById('submitAuthBtn');
+        const toggleText = document.getElementById('toggleText');
+        const confirmPasswordGroup = document.getElementById('confirmPasswordGroup');
+        let isLoginMode = true;
+
+        openAuthBtn.addEventListener('click', () => authModal.classList.add('active'));
+        closeAuthBtn.addEventListener('click', () => authModal.classList.remove('active'));
+        authModal.addEventListener('click', (e) => { if (e.target === authModal) authModal.classList.remove('active'); });
+
+        toggleAuthMode.addEventListener('click', () => {
+            isLoginMode = !isLoginMode;
+            if (isLoginMode) {
+                modalTitle.textContent = 'ВХОД';
+                modalSubtitle.textContent = 'Войдите в свой аккаунт FUTURA';
+                submitAuthBtn.textContent = 'ВОЙТИ';
+                toggleText.textContent = 'Нет аккаунта?';
+                toggleAuthMode.textContent = 'Зарегистрироваться';
+                confirmPasswordGroup.style.display = 'none';
+            } else {
+                modalTitle.textContent = 'РЕГИСТРАЦИЯ';
+                modalSubtitle.textContent = 'Создайте аккаунт для покупок';
+                submitAuthBtn.textContent = 'СОЗДАТЬ АККАУНТ';
+                toggleText.textContent = 'Уже есть аккаунт?';
+                toggleAuthMode.textContent = 'Войти';
+                confirmPasswordGroup.style.display = 'block';
+            }
+        });
+
+        document.getElementById('authForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            submitAuthBtn.textContent = 'ЗАГРУЗКА...';
+            setTimeout(() => {
+                showToast(isLoginMode ? 'Вы успешно вошли!' : 'Аккаунт создан!', 'fav');
+                authModal.classList.remove('active');
+                submitAuthBtn.textContent = isLoginMode ? 'ВОЙТИ' : 'СОЗДАТЬ АККАУНТ';
+            }, 1000);
+        });
+
+        // --- 12. НАВИГАЦИЯ ---
+        const navLinks = document.querySelectorAll('.nav-links a');
+        const sections = document.querySelectorAll('section[id]');
+        const navIndicator = document.getElementById('navIndicator');
+
+        function moveIndicator(element) {
+            if (!element) {
+                navIndicator.classList.remove('active');
+                return;
+            }
+            const rect = element.getBoundingClientRect();
+            const parentRect = element.parentElement.parentElement.getBoundingClientRect();
+            
+            navIndicator.style.width = `${rect.width}px`;
+            navIndicator.style.left = `${rect.left - parentRect.left}px`;
+            navIndicator.classList.add('active');
+        }
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                
+                if (targetSection) {
+                    const offsetTop = targetSection.offsetTop - 100;
+                    if (targetId === '#hero') {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    } else {
+                        window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            const scrollPosition = window.scrollY + 150;
+
+            if (window.scrollY < 100) {
+                current = 'hero';
+            } else {
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                        current = section.getAttribute('id');
+                    }
+                });
+            }
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                    moveIndicator(link); 
+                }
+            });
+        });
+
+        window.addEventListener('load', () => {
+            const currentScroll = window.scrollY;
+            if (currentScroll < 100) {
+                document.querySelector('.nav-links a[href="#hero"]').classList.add('active');
+            }
+            const activeLink = document.querySelector('.nav-links a.active');
+            if (activeLink) moveIndicator(activeLink);
+        });
+
+        // --- 13. ТАЙМЕР ---
+        function startTimer() {
+            let totalSeconds = (14 * 3600) + (35 * 60); 
+            const pad = (num) => String(num).padStart(2, '0');
+
+            setInterval(() => {
+                if (totalSeconds > 0) {
+                    totalSeconds--;
+                } else {
+                    return;
+                }
+
+                const hours = Math.floor(totalSeconds / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+
+                document.getElementById('hours').textContent = pad(hours);
+                document.getElementById('minutes').textContent = pad(minutes);
+                document.getElementById('seconds').textContent = pad(seconds);
+            }, 1000);
+        }
+        startTimer();
+
+        // --- 14. ИНИЦИАЛИЗАЦИЯ И ПРОЧЕЕ ---
+        renderGrids();
+
+        const characters = document.querySelectorAll('.character-img');
+        let currentChar = 0;
+        setInterval(() => {
+            characters[currentChar].classList.remove('active');
+            currentChar = (currentChar + 1) % characters.length;
+            characters[currentChar].classList.add('active');
+        }, 3000);
+
+        const revealOnScroll = () => {
+            const windowHeight = window.innerHeight;
+            document.querySelectorAll('.reveal').forEach((reveal) => {
+                const elementTop = reveal.getBoundingClientRect().top;
+                if (elementTop < windowHeight - 100) reveal.classList.add('active');
+            });
+        };
+        window.addEventListener('scroll', revealOnScroll);
+        
+        const orb = document.querySelector('.glass-orb');
+        const heroSection = document.querySelector('.hero');
+        heroSection.addEventListener('mousemove', (e) => {
+            const x = (window.innerWidth / 2 - e.pageX) / 25;
+            const y = (window.innerHeight / 2 - e.pageY) / 25;
+            orb.style.transform = `translate(${x}px, ${y}px) rotate(${x}deg)`;
+        });
+        heroSection.addEventListener('mouseleave', () => {
+            orb.style.transform = `translate(0px, 0px) rotate(0deg)`;
+        });
+
+        // --- 15. МАГНИТНАЯ КНОПКА "К РАСПРОДАЖЕ" ---
+        const saleBtn = document.getElementById('saleBtn');
+        
+        saleBtn.addEventListener('mousemove', (e) => {
+            const rect = saleBtn.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            
+            saleBtn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px) scale(1.05)`;
+        });
+
+        saleBtn.addEventListener('mouseleave', () => {
+            saleBtn.style.transform = `translate(0px, 0px) scale(1)`;
+        });
+
+        saleBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const target = document.getElementById('sale');
+            const offsetTop = target.offsetTop - 100;
+            window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
