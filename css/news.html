@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Новости — SteamShop</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="header">
+  <div class="container header__inner">
+    <a href="index.html" class="logo"><span class="logo__mark">S</span>SteamShop</a>
+    <nav class="nav">
+      <a href="index.html">Главная</a>
+      <a href="catalog.html">Каталог</a>
+      <a href="news.html" class="active">Новости</a>
+      <a href="library.html">Библиотека</a>
+      <a href="about.html">О магазине</a>
+    </nav>
+    <div class="header__actions">
+      <button class="icon-btn burger" aria-label="Меню">☰</button>
+      <a class="icon-btn" href="cart.html" aria-label="Корзина">🛒<span class="cart-count">0</span></a>
+    </div>
+  </div>
+</header>
+
+<section class="section" style="padding-top:52px">
+  <div class="container">
+    <div class="section__head reveal">
+      <div><div class="eyebrow">Новости и обновления</div><h2>Что нового</h2><p>Скидки, патчи, турниры и изменения в работе магазина.</p></div>
+    </div>
+    <div class="chips">
+      <span class="chip active" data-tag="all">Все</span>
+      <span class="chip" data-tag="Скидки">Скидки</span>
+      <span class="chip" data-tag="Обновление">Обновления</span>
+      <span class="chip" data-tag="Событие">События</span>
+      <span class="chip" data-tag="Магазин">Магазин</span>
+    </div>
+    <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(330px,1fr))" id="news-root"></div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__bottom" style="margin-top:0;border:none;padding-top:0">
+      <span>© 2026 SteamShop</span><span>Демо-проект</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
