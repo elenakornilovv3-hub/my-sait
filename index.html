@@ -17,7 +17,6 @@
             --accent-violet-hover: #9D42FF; 
             --dark-navy: #1F1E2E;      
             --card-bg: rgba(31, 30, 46, 0.6);
-            --drawer-bg: #151420;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -28,7 +27,7 @@
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
             scroll-behavior: smooth;
-            cursor: none; /* Скрываем стандартный курсор */
+            cursor: none;
             position: relative;
         }
 
@@ -36,18 +35,11 @@
            ИГРОВОЙ ФОН (ДЕКОРАЦИИ)
            ========================================= */
         .bg-decorations {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            pointer-events: none;
-            z-index: -2;
-            overflow: hidden;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: -2; overflow: hidden;
         }
-
-        /* Сетка */
         .bg-grid {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background-image: 
                 linear-gradient(rgba(138, 43, 225, 0.05) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(138, 43, 225, 0.05) 1px, transparent 1px);
@@ -56,102 +48,61 @@
             -webkit-mask-image: radial-gradient(circle at center, black 20%, transparent 80%);
             animation: gridMove 20s linear infinite;
         }
-
-        /* Сканлайны */
         .bg-scanlines {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.1));
-            background-size: 100% 4px;
-            opacity: 0.3;
+            background-size: 100% 4px; opacity: 0.3;
         }
 
-        /* Плавающие игровые предметы */
         .bg-icon {
             position: absolute;
-            color: rgba(138, 43, 225, 0.15);
+            color: rgba(138, 43, 225, 0.4);
             width: 60px; height: 60px;
-            filter: drop-shadow(0 0 10px rgba(138, 43, 225, 0.2));
+            filter: drop-shadow(0 0 15px rgba(138, 43, 225, 0.5));
             animation: floatIcon 15s ease-in-out infinite alternate;
         }
-        
-        /* Разные позиции, размеры и тайминги */
-        .icon-1 { top: 15%; left: 10%; width: 70px; height: 70px; animation-duration: 18s; } /* Монета */
-        .icon-2 { top: 60%; right: 8%; width: 90px; height: 90px; animation-duration: 22s; animation-delay: -5s; transform: rotate(15deg); } /* Аптечка */
-        .icon-3 { bottom: 15%; left: 15%; width: 80px; height: 80px; animation-duration: 20s; animation-delay: -2s; transform: rotate(-10deg); } /* Сундук */
-        .icon-4 { top: 30%; right: 20%; width: 60px; height: 60px; animation-duration: 25s; animation-delay: -10s; } /* Кристалл */
-        .icon-5 { bottom: 30%; right: 40%; width: 85px; height: 85px; animation-duration: 19s; animation-delay: -7s; transform: rotate(25deg); } /* Картридж */
+        .icon-1 { top: 15%; left: 10%; width: 70px; height: 70px; animation-duration: 18s; }
+        .icon-2 { top: 60%; right: 8%; width: 90px; height: 90px; animation-duration: 22s; animation-delay: -5s; transform: rotate(15deg); }
+        .icon-3 { bottom: 15%; left: 15%; width: 80px; height: 80px; animation-duration: 20s; animation-delay: -2s; transform: rotate(-10deg); }
+        .icon-4 { top: 30%; right: 20%; width: 60px; height: 60px; animation-duration: 25s; animation-delay: -10s; }
+        .icon-5 { bottom: 30%; right: 40%; width: 85px; height: 85px; animation-duration: 19s; animation-delay: -7s; transform: rotate(25deg); }
 
-        /* Светящиеся частицы */
         .particle {
-            position: absolute;
-            background: var(--accent-violet);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--accent-violet);
-            animation: particleFloat linear infinite;
-            opacity: 0;
+            position: absolute; background: var(--accent-violet); border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-violet); animation: particleFloat linear infinite; opacity: 0;
         }
 
-        @keyframes gridMove {
-            0% { background-position: 0 0; }
-            100% { background-position: 50px 50px; }
-        }
+        @keyframes gridMove { 0% { background-position: 0 0; } 100% { background-position: 50px 50px; } }
+        @keyframes floatIcon { 0% { transform: translateY(0) rotate(0deg); } 100% { transform: translateY(-40px) rotate(10deg); } }
+        @keyframes particleFloat { 0% { transform: translateY(0); opacity: 0; } 10% { opacity: 0.6; } 90% { opacity: 0.6; } 100% { transform: translateY(-100vh); opacity: 0; } }
 
-        @keyframes floatIcon {
-            0% { transform: translateY(0) rotate(0deg); }
-            100% { transform: translateY(-40px) rotate(10deg); }
-        }
-
-        @keyframes particleFloat {
-            0% { transform: translateY(0); opacity: 0; }
-            10% { opacity: 0.6; }
-            90% { opacity: 0.6; }
-            100% { transform: translateY(-100vh); opacity: 0; }
-        }
-
-        @media (max-width: 768px) {
-            .bg-icon, .particle { display: none; }
-            .bg-grid { background-size: 30px 30px; }
-        }
-        /* ========================================= */
-
+        @media (max-width: 768px) { .bg-icon, .particle { display: none; } .bg-grid { background-size: 30px 30px; } }
 
         /* --- КАСТОМНЫЙ КУРСОР --- */
         .custom-cursor {
             position: fixed; top: 0; left: 0; width: 8px; height: 8px;
             background: var(--accent-violet); border-radius: 50%;
-            pointer-events: none; z-index: 9999;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 15px 5px rgba(138, 43, 225, 0.6);
-            transition: width 0.2s, height 0.2s, background 0.2s;
+            pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);
+            box-shadow: 0 0 15px 5px rgba(138, 43, 225, 0.6); transition: width 0.2s, height 0.2s, background 0.2s;
         }
         .custom-cursor-follower {
             position: fixed; top: 0; left: 0; width: 40px; height: 40px;
             border: 1px solid rgba(138, 43, 225, 0.3); background: rgba(138, 43, 225, 0.05);
-            border-radius: 50%; pointer-events: none; z-index: 9998;
-            transform: translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s, border-color 0.2s, background 0.2s;
-            backdrop-filter: blur(2px);
+            border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, border-color 0.2s, background 0.2s; backdrop-filter: blur(2px);
         }
         .custom-cursor.hover-active { width: 15px; height: 15px; background: #fff; box-shadow: 0 0 20px 8px rgba(255, 255, 255, 0.8); }
         .custom-cursor-follower.hover-active { width: 60px; height: 60px; border-color: rgba(255, 255, 255, 0.5); background: rgba(255, 255, 255, 0.1); }
-        
-        @media (pointer: coarse) {
-            body { cursor: auto; }
-            .custom-cursor, .custom-cursor-follower { display: none; }
-        }
+        @media (pointer: coarse) { body { cursor: auto; } .custom-cursor, .custom-cursor-follower { display: none; } }
 
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-color); }
         ::-webkit-scrollbar-thumb { background: var(--accent-violet); border-radius: 10px; }
 
-        /* --- Иконки SVG --- */
         .svg-icon { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: all 0.3s; }
         .action-btn .svg-icon { width: 16px; height: 16px; }
 
-        /* =========================================
-           КОМПАКТНАЯ НАВИГАЦИЯ
-           ========================================= */
+        /* --- НАВИГАЦИЯ --- */
         nav {
             position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
             width: 90%; max-width: 900px; padding: 6px 12px 6px 16px; 
@@ -162,83 +113,82 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
             transition: background 0.3s, border-color 0.3s;
         }
-
         nav:hover { background: rgba(20, 20, 28, 0.8); border-color: rgba(138, 43, 225, 0.3); }
-
         .logo { font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 0.95rem; letter-spacing: -0.5px; display: flex; align-items: center; gap: 4px; cursor: pointer; }
         .logo span { color: var(--accent-violet); }
         
-        .nav-links-container {
-            position: relative; display: flex; align-items: center;
-            background: rgba(255, 255, 255, 0.03); padding: 3px; border-radius: 50px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .nav-indicator {
-            position: absolute; top: 3px; height: calc(100% - 6px);
-            background: var(--accent-violet); border-radius: 50px;
-            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); z-index: 1;
-            box-shadow: 0 0 15px rgba(138, 43, 225, 0.5); opacity: 0; pointer-events: none;
-        }
+        .nav-links-container { position: relative; display: flex; align-items: center; background: rgba(255, 255, 255, 0.03); padding: 3px; border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .nav-indicator { position: absolute; top: 3px; height: calc(100% - 6px); background: var(--accent-violet); border-radius: 50px; transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); z-index: 1; box-shadow: 0 0 15px rgba(138, 43, 225, 0.5); opacity: 0; pointer-events: none; }
         .nav-indicator.active { opacity: 1; }
-
         .nav-links { display: flex; gap: 2px; position: relative; z-index: 2; }
-        .nav-links a {
-            color: #9a9aae; text-decoration: none; font-size: 0.7rem; text-transform: uppercase;
-            letter-spacing: 0.5px; font-weight: 600; padding: 6px 14px; border-radius: 50px;
-            transition: color 0.3s ease; position: relative;
-        }
+        .nav-links a { color: #9a9aae; text-decoration: none; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; padding: 6px 14px; border-radius: 50px; transition: color 0.3s ease; position: relative; }
         .nav-links a:hover { color: var(--text-color); }
         .nav-links a.active { color: var(--text-color); }
 
         .user-actions { display: flex; gap: 6px; align-items: center; }
-
-        .icon-btn {
-            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); 
-            color: var(--text-color); width: 32px; height: 32px; border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: all 0.3s ease; position: relative;
-        }
+        .icon-btn { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); color: var(--text-color); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; position: relative; }
         .icon-btn .svg-icon { width: 16px; height: 16px; } 
         .icon-btn:hover { background: rgba(138, 43, 225, 0.15); border-color: var(--accent-violet); color: var(--accent-violet); transform: translateY(-2px); }
-
-        .badge {
-            position: absolute; top: -2px; right: -2px; background: #FF3366; color: white; 
-            font-size: 8px; width: 14px; height: 14px; border-radius: 50%; display: flex; align-items: center;
-            justify-content: center; font-weight: bold; border: 1.5px solid var(--bg-color); transition: transform 0.2s;
-        }
+        .badge { position: absolute; top: -2px; right: -2px; background: #FF3366; color: white; font-size: 8px; width: 14px; height: 14px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 1.5px solid var(--bg-color); transition: transform 0.2s; }
         .badge.pop { transform: scale(1.4); }
-
-        .btn-login {
-            background: var(--text-color); border: none; color: #000; padding: 7px 14px; border-radius: 50px;
-            font-family: 'Unbounded', sans-serif; font-size: 0.6rem; cursor: pointer; transition: all 0.3s; font-weight: 700; margin-left: 2px;
-        }
+        .btn-login { background: var(--text-color); border: none; color: #000; padding: 7px 14px; border-radius: 50px; font-family: 'Unbounded', sans-serif; font-size: 0.6rem; cursor: pointer; transition: all 0.3s; font-weight: 700; margin-left: 2px; }
         .btn-login:hover { background: var(--accent-violet); color: var(--text-color); box-shadow: 0 0 15px rgba(138, 43, 225, 0.4); transform: translateY(-2px);}
 
-        /* --- Боковая панель (Корзина / Избранное) --- */
+        /* =========================================
+           ЦЕНТРАЛЬНОЕ МОДАЛЬНОЕ ОКНО (Избранное/Корзина)
+           ========================================= */
         .drawer-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(10, 10, 12, 0.8); backdrop-filter: blur(5px); z-index: 2500;
-            opacity: 0; pointer-events: none; transition: opacity 0.3s;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(10, 10, 12, 0.6);
+            backdrop-filter: blur(12px) saturate(120%);
+            z-index: 2500; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
         }
         .drawer-overlay.active { opacity: 1; pointer-events: all; }
 
-        .drawer {
-            position: fixed; top: 0; right: -450px; width: 100%; max-width: 400px; height: 100%;
-            background: var(--drawer-bg); z-index: 2600; box-shadow: -10px 0 40px rgba(0,0,0,0.8);
-            display: flex; flex-direction: column; transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border-left: 1px solid rgba(255,255,255,0.05);
+        .drawer-scene {
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            width: 100%;
+            max-width: 900px; 
+            perspective: 1000px;
+            padding-left: 120px; 
         }
-        .drawer.active { right: 0; }
 
-        .drawer-header { padding: 30px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; }
+        .drawer {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            height: 600px;
+            max-height: 85vh;
+            background: linear-gradient(135deg, rgba(31, 30, 46, 0.95), rgba(21, 20, 32, 0.98));
+            border: 1px solid rgba(138, 43, 225, 0.3);
+            border-radius: 30px;
+            display: flex; flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.9), 0 0 30px rgba(138, 43, 225, 0.2) inset;
+            z-index: 10;
+            
+            opacity: 0;
+            transform: translateY(80px) rotateX(15deg) scale(0.9);
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .drawer-overlay.active .drawer {
+            opacity: 1;
+            transform: translateY(0) rotateX(0deg) scale(1);
+        }
+
+        .drawer-header { padding: 25px 30px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; }
         .drawer-title { font-family: 'Unbounded', sans-serif; font-size: 1.5rem; color: var(--text-color);}
-        .close-drawer { background: transparent; border: none; color: #aaa; cursor: pointer; font-size: 1.5rem; transition: color 0.3s; }
-        .close-drawer:hover { color: var(--accent-violet); }
+        .close-drawer { background: transparent; border: none; color: #aaa; cursor: pointer; font-size: 1.5rem; transition: all 0.3s; }
+        .close-drawer:hover { color: var(--accent-violet); transform: rotate(90deg); }
 
         .drawer-body { flex: 1; overflow-y: auto; padding: 20px 30px; display: flex; flex-direction: column; gap: 15px; }
+        .drawer-empty { color: #666; text-align: center; margin-top: 50px; font-size: 0.9rem; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        .drawer-empty svg { width: 50px; height: 50px; stroke: var(--accent-violet); opacity: 0.5; animation: pulseEmpty 2s infinite alternate; }
 
-        .drawer-item { display: flex; gap: 15px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 15px; padding: 15px; align-items: center; transition: border-color 0.3s; }
+        .drawer-item { display: flex; gap: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 15px; padding: 15px; align-items: center; transition: border-color 0.3s; }
         .drawer-item:hover { border-color: var(--accent-violet); }
         .drawer-item img { width: 60px; height: 80px; object-fit: cover; border-radius: 8px; }
         .drawer-item-info { flex: 1; }
@@ -247,32 +197,54 @@
         .remove-item { background: rgba(255, 51, 102, 0.1); border: none; color: #FF3366; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; }
         .remove-item:hover { background: #FF3366; color: white; }
 
-        .drawer-empty { color: #666; text-align: center; margin-top: 50px; font-size: 0.9rem; }
-
-        .drawer-footer { padding: 30px; border-top: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.3); }
+        .drawer-footer { padding: 25px 30px; border-top: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.3); border-radius: 0 0 30px 30px; }
         .drawer-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-family: 'Unbounded', sans-serif; font-size: 1.2rem; color: var(--text-color); }
         .drawer-total span:last-child { color: var(--accent-violet); }
         .checkout-btn { width: 100%; padding: 15px; background: var(--accent-violet); color: var(--text-color); border: none; border-radius: 12px; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 1rem; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
         .checkout-btn:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(138, 43, 225, 0.4); }
 
+        /* =========================================
+           ПЕРСОНАЖ ИЗ CS (Слева)
+           ========================================= */
+        .gta-girl {
+            position: absolute;
+            left: -120px; 
+            bottom: -10px;
+            width: 420px; 
+            height: auto;
+            z-index: 20; 
+            pointer-events: none;
+            
+            opacity: 0;
+            transform: translateX(-100px) translateY(50px) scale(0.9) rotate(-5deg);
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            
+            filter: drop-shadow(15px 0 30px rgba(0,0,0,0.9)) drop-shadow(0 0 25px rgba(138, 43, 225, 0.5));
+        }
+
+        .drawer-overlay.active .gta-girl {
+            opacity: 1;
+            transform: translateX(0) translateY(0) scale(1) rotate(0deg);
+            transition-delay: 0.1s;
+        }
+
+        @media (max-width: 900px) {
+            .drawer-scene { padding-left: 0; justify-content: center; }
+            .drawer { max-width: 90%; height: auto; max-height: 80vh; margin: 20px; }
+            .gta-girl { display: none; } 
+        }
+        /* ========================================= */
+
+
         /* --- Уведомления (Toasts) --- */
         .toast-container { position: fixed; bottom: 30px; right: 30px; z-index: 3000; display: flex; flex-direction: column; gap: 10px; }
-        .toast {
-            background: rgba(21, 20, 32, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);
-            border-left: 4px solid var(--accent-violet); color: var(--text-color); padding: 15px 25px; border-radius: 10px;
-            font-size: 0.9rem; font-weight: 500; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            transform: translateX(120%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+        .toast { background: rgba(21, 20, 32, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); border-left: 4px solid var(--accent-violet); color: var(--text-color); padding: 15px 25px; border-radius: 10px; font-size: 0.9rem; font-weight: 500; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); transform: translateX(120%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .toast.show { transform: translateX(0); }
         .toast svg { color: var(--accent-violet); }
 
-        /* --- Главный Экран (Hero) --- */
+        /* --- ГЛАВНЫЙ ЭКРАН --- */
         .hero { height: 100vh; display: flex; align-items: center; justify-content: space-between; padding: 0 5vw; padding-top: 60px; position: relative; overflow: hidden; }
-        .hero::before {
-            content: ''; position: absolute; width: 800px; height: 800px; background: var(--accent-violet);
-            filter: blur(200px); top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.15; z-index: -1;
-            animation: pulseBg 6s infinite alternate;
-        }
+        .hero::before { content: ''; position: absolute; width: 800px; height: 800px; background: var(--accent-violet); filter: blur(200px); top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.15; z-index: -1; animation: pulseBg 6s infinite alternate; }
         .hero-text { z-index: 2; max-width: 50%; }
         h1 { font-family: 'Unbounded', sans-serif; font-size: 4.5rem; line-height: 1.1; text-transform: uppercase; font-weight: 900; color: var(--text-color);}
         .float-text { display: inline-block; animation: floatText 4s ease-in-out infinite; }
@@ -280,151 +252,69 @@
         .float-text:nth-child(3) { animation-delay: 1s; }
         .hero-subtitle { margin-top: 30px; font-size: 1.1rem; color: #aaa; max-width: 450px; line-height: 1.6; }
         
-        .cta-btn {
-            display: inline-block; margin-top: 40px; padding: 18px 35px; background: var(--accent-violet); color: var(--text-color);
-            font-family: 'Unbounded', sans-serif; font-weight: 700; text-transform: uppercase; text-decoration: none;
-            border-radius: 50px; border: 1px solid transparent; cursor: pointer; font-size: 0.9rem;
-            position: relative; overflow: hidden;
-            transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-        .cta-btn:hover {
-            background: var(--accent-violet-hover);
-            box-shadow: 0 0 35px rgba(138, 43, 225, 0.7), 0 0 15px rgba(255, 255, 255, 0.2) inset;
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-        .cta-btn::after {
-            content: ''; position: absolute; top: 50%; left: 50%; width: 300px; height: 300px;
-            background: rgba(255, 255, 255, 0.15); border-radius: 50%;
-            transform: translate(-50%, -50%) scale(0); opacity: 0;
-            transition: transform 0.5s ease-out, opacity 0.5s ease-out; pointer-events: none;
-        }
+        .cta-btn { display: inline-block; margin-top: 40px; padding: 18px 35px; background: var(--accent-violet); color: var(--text-color); font-family: 'Unbounded', sans-serif; font-weight: 700; text-transform: uppercase; text-decoration: none; border-radius: 50px; border: 1px solid transparent; cursor: pointer; font-size: 0.9rem; position: relative; overflow: hidden; transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, transform 0.2s cubic-bezier(0.25, 1, 0.5, 1); }
+        .cta-btn:hover { background: var(--accent-violet-hover); box-shadow: 0 0 35px rgba(138, 43, 225, 0.7), 0 0 15px rgba(255, 255, 255, 0.2) inset; border-color: rgba(255, 255, 255, 0.3); }
+        .cta-btn::after { content: ''; position: absolute; top: 50%; left: 50%; width: 300px; height: 300px; background: rgba(255, 255, 255, 0.15); border-radius: 50%; transform: translate(-50%, -50%) scale(0); opacity: 0; transition: transform 0.5s ease-out, opacity 0.5s ease-out; pointer-events: none; }
         .cta-btn:active::after { transform: translate(-50%, -50%) scale(1); opacity: 1; transition: 0s; }
         .cta-btn .arrow { display: inline-block; margin-left: 8px; transition: transform 0.3s ease; }
         .cta-btn:hover .arrow { transform: translateX(5px); }
 
         .hero-visual { position: relative; width: 50%; height: 80%; display: flex; align-items: center; justify-content: center; }
-        .glass-orb {
-            position: absolute; width: 450px; height: 450px; border-radius: 50%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0));
-            backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 80px rgba(138, 43, 225, 0.2); z-index: 1; animation: rotateOrb 25s linear infinite;
-        }
-        .character-img {
-            position: absolute; max-height: 550px; z-index: 2; opacity: 0; transform: scale(0.9) translateY(30px);
-            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); filter: drop-shadow(0 20px 40px rgba(0,0,0,0.9)); border-radius: 20px;
-        }
+        .glass-orb { position: absolute; width: 450px; height: 450px; border-radius: 50%; background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0)); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 0 80px rgba(138, 43, 225, 0.2); z-index: 1; animation: rotateOrb 25s linear infinite; }
+        .character-img { position: absolute; max-height: 550px; z-index: 2; opacity: 0; transform: scale(0.9) translateY(30px); transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); filter: drop-shadow(0 20px 40px rgba(0,0,0,0.9)); border-radius: 20px; }
         .character-img.active { opacity: 1; transform: scale(1) translateY(0); }
 
-        /* --- Общие стили секций --- */
+        /* --- ОБЩИЕ СЕКЦИИ --- */
         .section-container { padding: 80px 5vw; scroll-margin-top: 100px; position: relative; }
-        
         .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; flex-wrap: wrap; gap: 20px; position: relative; }
-        
-        .section-title {
-            font-family: 'Unbounded', sans-serif; font-size: 2.5rem; text-transform: uppercase; color: var(--text-color);
-            position: relative; display: inline-block; padding-left: 20px;
-        }
-        .section-title::before {
-            content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px;
-            background: var(--accent-violet); box-shadow: 0 0 10px var(--accent-violet);
-        }
+        .section-title { font-family: 'Unbounded', sans-serif; font-size: 2.5rem; text-transform: uppercase; color: var(--text-color); position: relative; display: inline-block; padding-left: 20px; }
+        .section-title::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: var(--accent-violet); box-shadow: 0 0 10px var(--accent-violet); }
         .section-title span { color: var(--accent-violet); }
 
-        .search-box {
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 12px 20px;
-            border-radius: 30px; color: var(--text-color); font-size: 1rem; outline: none; width: 300px; transition: border-color 0.3s;
-        }
+        .search-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 12px 20px; border-radius: 30px; color: var(--text-color); font-size: 1rem; outline: none; width: 300px; transition: border-color 0.3s; }
         .search-box:focus { border-color: var(--accent-violet); box-shadow: 0 0 15px rgba(138, 43, 225, 0.2); }
 
         .genre-filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 30px; }
-        .genre-btn {
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #aaa;
-            padding: 8px 16px; border-radius: 50px; cursor: pointer; font-size: 0.85rem; transition: all 0.3s;
-        }
+        .genre-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #aaa; padding: 8px 16px; border-radius: 50px; cursor: pointer; font-size: 0.85rem; transition: all 0.3s; }
         .genre-btn:hover { border-color: var(--text-color); color: var(--text-color); }
         .genre-btn.active { background: var(--accent-violet); color: var(--text-color); border-color: var(--accent-violet); font-weight: 700; }
 
-        /* --- Сетка карточек (3D) --- */
+        /* --- СЕТКА КАРТОЧЕК --- */
         .games-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; perspective: 1200px; }
-
-        .game-card {
-            background: var(--card-bg); border-radius: 20px; position: relative; overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.05); height: 380px; display: flex; flex-direction: column; justify-content: flex-end;
-            transform-style: preserve-3d; transition: border-color 0.3s, box-shadow 0.3s; will-change: transform;
-            cursor: pointer;
-        }
+        .game-card { background: var(--card-bg); border-radius: 20px; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); height: 380px; display: flex; flex-direction: column; justify-content: flex-end; transform-style: preserve-3d; transition: border-color 0.3s, box-shadow 0.3s; will-change: transform; cursor: pointer; }
         .game-card:hover { border-color: var(--accent-violet); box-shadow: 0 15px 35px rgba(138, 43, 225, 0.2); }
-
-        .game-card img.bg-img { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.4; z-index: 0; 
-            transform: translateZ(0px) scale(1); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s;
-            will-change: transform;
-        }
+        .game-card img.bg-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.4; z-index: 0; transform: translateZ(0px) scale(1); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s; will-change: transform; }
         .game-card:hover img.bg-img { opacity: 0.6; transform: translateZ(-20px) scale(1.1); }
-        
-        .game-card::after {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(to top, rgba(21, 20, 32, 0.98) 0%, rgba(21, 20, 32, 0.8) 30%, transparent 80%);
-            z-index: 1; transition: opacity 0.4s; pointer-events: none;
-        }
-
-        .card-content {
-            position: relative; z-index: 10; padding: 20px; width: 100%;
-            transform: translateZ(30px); transition: transform 0.4s; pointer-events: none;
-        }
+        .game-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(21, 20, 32, 0.98) 0%, rgba(21, 20, 32, 0.8) 30%, transparent 80%); z-index: 1; transition: opacity 0.4s; pointer-events: none; }
+        .card-content { position: relative; z-index: 10; padding: 20px; width: 100%; transform: translateZ(30px); transition: transform 0.4s; pointer-events: none; }
         .card-actions { pointer-events: auto; }
         .game-card:hover .card-content { transform: translateZ(50px); }
-
-        .game-title { 
-            font-family: 'Unbounded', sans-serif; font-size: 1.1rem; margin-bottom: 5px; line-height: 1.2; color: var(--text-color);
-            text-shadow: 0 2px 10px rgba(0,0,0,0.9); transition: text-shadow 0.3s;
-        }
+        .game-title { font-family: 'Unbounded', sans-serif; font-size: 1.1rem; margin-bottom: 5px; line-height: 1.2; color: var(--text-color); text-shadow: 0 2px 10px rgba(0,0,0,0.9); transition: text-shadow 0.3s; }
         .game-card:hover .game-title { text-shadow: 0 0 15px rgba(138, 43, 225, 0.6); }
-
-        .game-desc { 
-            font-size: 0.8rem; color: #aaa; margin-bottom: 15px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; 
-            overflow: hidden; line-height: 1.4; transition: opacity 0.3s;
-        }
-
+        .game-desc { font-size: 0.8rem; color: #aaa; margin-bottom: 15px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; transition: opacity 0.3s; }
         .card-bottom { display: flex; justify-content: space-between; align-items: center; }
         .price { color: var(--accent-violet); font-weight: 700; font-family: 'Unbounded', sans-serif; font-size: 1.1rem; }
         .price.old-price { text-decoration: line-through; color: #666; font-size: 0.8rem; margin-right: 5px; }
-
         .card-actions { display: flex; gap: 8px; }
-        .action-btn {
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-color);
-            width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: all 0.2s;
-        }
+        .action-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-color); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
         .action-btn:hover { background: var(--text-color); color: #000; }
         .action-btn.cart-btn.active { background: var(--accent-violet); color: var(--text-color); border-color: var(--accent-violet); box-shadow: 0 0 10px var(--accent-violet);}
         .action-btn.fav-btn.active { background: #FF3366; color: white; border-color: #FF3366; box-shadow: 0 0 10px #FF3366;}
 
-        /* --- Секция Распродажи --- */
-        .sale-banner {
-            background: linear-gradient(45deg, var(--dark-navy), var(--bg-color)); border: 1px solid var(--accent-violet);
-            border-radius: 30px; padding: 60px; display: flex; justify-content: space-between; align-items: center;
-            position: relative; overflow: hidden; box-shadow: 0 0 50px rgba(138, 43, 225, 0.15);
-        }
-        .sale-banner::before {
-            content: ''; position: absolute; width: 300px; height: 300px; background: var(--accent-violet);
-            filter: blur(120px); top: -50px; left: -50px; opacity: 0.5;
-        }
+        /* --- РАСПРОДАЖА --- */
+        .sale-banner { background: linear-gradient(45deg, var(--dark-navy), var(--bg-color)); border: 1px solid var(--accent-violet); border-radius: 30px; padding: 60px; display: flex; justify-content: space-between; align-items: center; position: relative; overflow: hidden; box-shadow: 0 0 50px rgba(138, 43, 225, 0.15); }
+        .sale-banner::before { content: ''; position: absolute; width: 300px; height: 300px; background: var(--accent-violet); filter: blur(120px); top: -50px; left: -50px; opacity: 0.5; }
         .sale-text h2 { font-family: 'Unbounded', sans-serif; font-size: 3.5rem; line-height: 1; margin-bottom: 15px; color: var(--text-color); text-shadow: 0 0 20px var(--accent-violet); }
         .sale-text p { font-size: 1.2rem; color: #ccc; max-width: 400px; }
-        
         .sale-timer { display: flex; gap: 15px; margin-top: 30px; }
         .timer-block { background: rgba(10, 10, 12, 0.8); border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 15px; text-align: center; min-width: 80px; backdrop-filter: blur(5px);}
         .timer-num { font-family: 'Unbounded', sans-serif; font-size: 2rem; font-weight: 700; color: var(--text-color); line-height: 1; }
         .timer-label { font-size: 0.7rem; color: #888; text-transform: uppercase; margin-top: 5px; }
         .timer-block.seconds .timer-num { color: var(--accent-violet); text-shadow: 0 0 10px rgba(138, 43, 225, 0.5); }
 
-        /* --- Секция Новости --- */
+        /* --- НОВОСТИ --- */
         .news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .news-card {
-            background: var(--card-bg); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; overflow: hidden;
-            transition: transform 0.3s, border-color 0.3s;
-        }
+        .news-card { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; overflow: hidden; transition: transform 0.3s, border-color 0.3s; }
         .news-card:hover { transform: translateY(-5px); border-color: var(--accent-violet); box-shadow: 0 10px 30px rgba(138, 43, 225, 0.1);}
         .news-img { width: 100%; height: 200px; object-fit: cover; opacity: 0.7; }
         .news-content { padding: 20px; }
@@ -432,89 +322,40 @@
         .news-title { font-family: 'Unbounded', sans-serif; font-size: 1.2rem; margin-bottom: 10px; line-height: 1.3; color: var(--text-color);}
         .news-desc { font-size: 0.9rem; color: #aaa; line-height: 1.5; }
 
-        /* --- Промокоды --- */
+        /* --- ПРОМОКОДЫ --- */
         .promo-section { background: linear-gradient(180deg, var(--bg-color) 0%, var(--dark-navy) 100%); }
-        .promo-container {
-            display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1); padding: 50px; border-radius: 30px; backdrop-filter: blur(20px); overflow: hidden;
-        }
+        .promo-container { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 50px; border-radius: 30px; backdrop-filter: blur(20px); overflow: hidden; }
         .promo-text h2 { font-family: 'Unbounded', sans-serif; font-size: 2.5rem; margin-bottom: 20px; color: var(--text-color);}
         .promo-input-group { display: flex; gap: 10px; margin-top: 20px; }
-        .promo-input-group input {
-            background: rgba(10, 10, 12, 0.5); border: 1px solid rgba(255,255,255,0.2); padding: 15px 20px;
-            border-radius: 50px; color: var(--text-color); font-size: 1rem; outline: none; width: 300px;
-        }
+        .promo-input-group input { background: rgba(10, 10, 12, 0.5); border: 1px solid rgba(255,255,255,0.2); padding: 15px 20px; border-radius: 50px; color: var(--text-color); font-size: 1rem; outline: none; width: 300px; }
         .promo-input-group input:focus { border-color: var(--accent-violet); }
 
-        /* =========================================
-           МОДАЛЬНЫЕ ОКНА
-           ========================================= */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(10, 10, 12, 0.7);
-            backdrop-filter: blur(15px) saturate(150%);
-            z-index: 2000; display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none; 
-            transition: opacity 0.4s ease;
-        }
+        /* --- МОДАЛКИ (Игра, Авторизация) --- */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 10, 12, 0.7); backdrop-filter: blur(15px) saturate(150%); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
         .modal-overlay.active { opacity: 1; pointer-events: all; }
-
-        .modal-content {
-            background: var(--dark-navy); border: 1px solid rgba(255,255,255,0.1); border-radius: 30px; padding: 40px;
-            width: 100%; max-width: 400px; position: relative; 
-            opacity: 0;
-            transform: translateY(50px) scale(0.9) rotateX(10deg);
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 0 80px rgba(0,0,0,0.9), 0 0 20px rgba(138, 43, 225, 0.2) inset;
-        }
-        .modal-overlay.active .modal-content { 
-            opacity: 1;
-            transform: translateY(0) scale(1) rotateX(0deg);
-        }
-        
+        .modal-content { background: var(--dark-navy); border: 1px solid rgba(255,255,255,0.1); border-radius: 30px; padding: 40px; width: 100%; max-width: 400px; position: relative; opacity: 0; transform: translateY(50px) scale(0.9) rotateX(10deg); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 0 80px rgba(0,0,0,0.9), 0 0 20px rgba(138, 43, 225, 0.2) inset; }
+        .modal-overlay.active .modal-content { opacity: 1; transform: translateY(0) scale(1) rotateX(0deg); }
         .close-modal { position: absolute; top: 20px; right: 20px; background: transparent; border: none; color: #aaa; cursor: pointer; font-size: 1.5rem; z-index: 10; transition: all 0.3s; }
         .close-modal:hover { color: var(--accent-violet); transform: rotate(90deg); }
 
-        .game-modal-content {
-            max-width: 900px; width: 90%; padding: 0; overflow: hidden;
-            display: flex; flex-direction: row;
-        }
-
-        .game-modal-img {
-            width: 40%; object-fit: cover; border-right: 1px solid rgba(255,255,255,0.05);
-            transform: scale(1.05); transition: transform 0.6s ease;
-        }
+        .game-modal-content { max-width: 900px; width: 90%; padding: 0; overflow: hidden; display: flex; flex-direction: row; }
+        .game-modal-img { width: 40%; object-fit: cover; border-right: 1px solid rgba(255,255,255,0.05); transform: scale(1.05); transition: transform 0.6s ease; }
         .modal-overlay.active .game-modal-img { transform: scale(1); }
-
         .game-modal-info { width: 60%; padding: 40px; display: flex; flex-direction: column; justify-content: center; }
-
         .game-modal-title { font-family: 'Unbounded', sans-serif; font-size: 2.5rem; margin-bottom: 15px; line-height: 1.1; color: var(--text-color); }
         .game-modal-desc { font-size: 1rem; color: #aaa; line-height: 1.6; margin-bottom: 30px; }
-        
         .game-modal-price-row { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; }
         .game-modal-price { font-family: 'Unbounded', sans-serif; font-size: 2rem; color: var(--accent-violet); font-weight: 700; }
         .game-modal-old-price { text-decoration: line-through; color: #666; font-size: 1.2rem; }
-
         .game-modal-actions { display: flex; gap: 15px; align-items: center; }
         .game-modal-actions .action-btn { width: 50px; height: 50px; border-radius: 25px; }
         .game-modal-actions .action-btn .svg-icon { width: 22px; height: 22px; }
-
-        .game-modal-buy-btn {
-            flex: 1; background: var(--accent-violet); color: var(--text-color); border: none;
-            border-radius: 50px; padding: 15px; font-family: 'Unbounded', sans-serif; font-weight: 700;
-            font-size: 1rem; cursor: pointer; position: relative; overflow: hidden;
-            transition: background 0.3s, box-shadow 0.3s, transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
-        }
+        .game-modal-buy-btn { flex: 1; background: var(--accent-violet); color: var(--text-color); border: none; border-radius: 50px; padding: 15px; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 1rem; cursor: pointer; position: relative; overflow: hidden; transition: background 0.3s, box-shadow 0.3s, transform 0.2s cubic-bezier(0.25, 1, 0.5, 1); }
         .game-modal-buy-btn:hover { background: var(--accent-violet-hover); box-shadow: 0 0 30px rgba(138, 43, 225, 0.6); }
-        .game-modal-buy-btn::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
-            transform: skewX(-25deg); transition: left 0.6s ease;
-        }
+        .game-modal-buy-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%); transform: skewX(-25deg); transition: left 0.6s ease; }
         .game-modal-buy-btn:hover::before { left: 150%; }
         .game-modal-buy-btn:active { transform: scale(0.95) !important; }
 
-        /* Форма авторизации */
         .modal-title { font-family: 'Unbounded', sans-serif; font-size: 1.8rem; margin-bottom: 10px; color: var(--text-color);}
         .modal-subtitle { color: #888; margin-bottom: 30px; font-size: 0.9rem; }
         .form-group { margin-bottom: 20px; }
@@ -527,14 +368,15 @@
         .toggle-auth a { color: var(--accent-violet); text-decoration: none; cursor: pointer; }
         .toggle-auth a:hover { text-decoration: underline; }
 
-        /* --- Анимации --- */
+        /* --- АНИМАЦИИ --- */
         .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s ease-out; }
         .reveal.active { opacity: 1; transform: translateY(0); }
         @keyframes floatText { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
         @keyframes pulseBg { 0% { opacity: 0.1; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0.2; transform: translate(-50%, -50%) scale(1.1); } }
         @keyframes rotateOrb { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes pulseEmpty { 0% { opacity: 0.3; transform: scale(0.9); } 100% { opacity: 0.7; transform: scale(1.1); } }
 
-        /* --- Адаптив --- */
+        /* --- АДАПТИВ --- */
         @media (max-width: 1200px) { .games-grid { grid-template-columns: repeat(3, 1fr); } }
         @media (max-width: 1024px) {
             h1 { font-size: 3.5rem; }
@@ -564,93 +406,68 @@
             .toast-container { left: 20px; right: 20px; bottom: 20px; }
             .toast { transform: translateY(120%); }
             .toast.show { transform: translateY(0); }
-            .drawer { width: 100%; max-width: 100%; right: -100%; }
-            
             .sale-timer { justify-content: center; flex-wrap: wrap;}
             .timer-block { min-width: 70px; padding: 10px; }
             .timer-num { font-size: 1.5rem; }
-            
             .game-modal-title { font-size: 1.8rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- =========================================
-         ИГРОВОЙ ФОН (ДЕКОРАЦИИ)
-         ========================================= -->
+    <!-- Игровой фон -->
     <div class="bg-decorations">
         <div class="bg-grid"></div>
         <div class="bg-scanlines"></div>
-        
-        <!-- Игровые предметы на фоне -->
-        <!-- 1. Монета -->
-        <svg class="bg-icon icon-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <circle cx="12" cy="12" r="9"></circle>
-            <path d="M14.5 9.5c0-1.5-1-2.5-2.5-2.5s-2.5.5-2.5 2 1 2 2.5 2.5 2.5 1 2.5 2.5-1 2.5-2.5 2.5-2.5-.5-2.5-1.5"></path>
-            <line x1="12" y1="5" x2="12" y2="7"></line>
-            <line x1="12" y1="17" x2="12" y2="19"></line>
-        </svg>
-
-        <!-- 2. Аптечка -->
-        <svg class="bg-icon icon-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <rect x="3" y="8" width="18" height="12" rx="2"></rect>
-            <path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-            <line x1="12" y1="12" x2="12" y2="16"></line>
-            <line x1="10" y1="14" x2="14" y2="14"></line>
-        </svg>
-
-        <!-- 3. Сундук -->
-        <svg class="bg-icon icon-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M4 10h16v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-9z"></path>
-            <path d="M4 10V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"></path>
-            <line x1="2" y1="10" x2="22" y2="10"></line>
-            <rect x="10" y="13" width="4" height="3" rx="1"></rect>
-        </svg>
-
-        <!-- 4. Магический кристалл -->
-        <svg class="bg-icon icon-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <polygon points="12 2 22 10 12 22 2 10"></polygon>
-            <line x1="2" y1="10" x2="22" y2="10"></line>
-            <line x1="12" y1="2" x2="12" y2="22"></line>
-        </svg>
-
-        <!-- 5. Картридж / Диск -->
-        <svg class="bg-icon icon-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <rect x="3" y="5" width="18" height="14" rx="2"></rect>
-            <circle cx="12" cy="12" r="4"></circle>
-            <circle cx="12" cy="12" r="1"></circle>
-        </svg>
-
-        <!-- Генератор частиц (заполнится через JS) -->
+        <svg class="bg-icon icon-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"></circle><path d="M14.5 9.5c0-1.5-1-2.5-2.5-2.5s-2.5.5-2.5 2 1 2 2.5 2.5 2.5 1 2.5 2.5-1 2.5-2.5 2.5-2.5-.5-2.5-1.5"></path><line x1="12" y1="5" x2="12" y2="7"></line><line x1="12" y1="17" x2="12" y2="19"></line></svg>
+        <svg class="bg-icon icon-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="8" width="18" height="12" rx="2"></rect><path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="12" y1="12" x2="12" y2="16"></line><line x1="10" y1="14" x2="14" y2="14"></line></svg>
+        <svg class="bg-icon icon-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 10h16v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-9z"></path><path d="M4 10V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"></path><line x1="2" y1="10" x2="22" y2="10"></line><rect x="10" y="13" width="4" height="3" rx="1"></rect></svg>
+        <svg class="bg-icon icon-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 22 10 12 22 2 10"></polygon><line x1="2" y1="10" x2="22" y2="10"></line><line x1="12" y1="2" x2="12" y2="22"></line></svg>
+        <svg class="bg-icon icon-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="12" cy="12" r="1"></circle></svg>
         <div id="particlesContainer"></div>
     </div>
 
-    <!-- КАСТОМНЫЙ КУРСОР -->
+    <!-- Курсор -->
     <div class="custom-cursor" id="cursor"></div>
     <div class="custom-cursor-follower" id="cursorFollower"></div>
 
-    <!-- Уведомления (Toasts) -->
+    <!-- Уведомления -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- Боковая панель (Корзина / Избранное) -->
-    <div class="drawer-overlay" id="drawerOverlay"></div>
-    <div class="drawer" id="drawer">
-        <div class="drawer-header">
-            <h2 class="drawer-title" id="drawerTitle">КОРЗИНА</h2>
-            <button class="close-drawer" id="closeDrawer">&times;</button>
-        </div>
-        <div class="drawer-body" id="drawerBody"></div>
-        <div class="drawer-footer" id="drawerFooter">
-            <div class="drawer-total">
-                <span>Итого:</span>
-                <span id="drawerTotalPrice">0 ₽</span>
+    <!-- =========================================
+         ЦЕНТРАЛЬНОЕ ОКНО КОРЗИНЫ / ИЗБРАННОГО
+         ========================================= -->
+    <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawerOnBg(event)">
+        <div class="drawer-scene">
+            
+            <!-- Персонаж из Counter-Strike -->
+            <!-- Используем официальный/фанатский арт в стиле CS, с резервной ссылкой -->
+            <img src="https://png.pngtree.com/png-vector/20241031/ourmid/pngtree-counter-strike-2-character-png-image_13778432.png" 
+                 alt="CS Character" 
+                 class="gta-girl" 
+                 id="gtaGirl"
+                 onerror="this.src='https://static.wikia.nocookie.net/counterstrike/images/3/3a/Ct_urban.png/revision/latest?cb=20121011134514';">
+
+            <!-- Само окно -->
+            <div class="drawer" id="drawer" onclick="event.stopPropagation()">
+                <div class="drawer-header">
+                    <h2 class="drawer-title" id="drawerTitle">КОРЗИНА</h2>
+                    <button class="close-drawer" onclick="closeDrawer()">&times;</button>
+                </div>
+                <div class="drawer-body" id="drawerBody"></div>
+                <div class="drawer-footer" id="drawerFooter">
+                    <div class="drawer-total">
+                        <span>Итого:</span>
+                        <span id="drawerTotalPrice">0 ₽</span>
+                    </div>
+                    <button class="checkout-btn" onclick="showToast('Переход к оплате...', 'fav')">ОФОРМИТЬ ЗАКАЗ</button>
+                </div>
             </div>
-            <button class="checkout-btn" onclick="showToast('Переход к оплате...', 'fav')">ОФОРМИТЬ ЗАКАЗ</button>
         </div>
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО С ДЕТАЛЯМИ ИГРЫ -->
+
+    <!-- Модальное окно с деталями игры -->
     <div class="modal-overlay" id="gameModal">
         <div class="modal-content game-modal-content">
             <button class="close-modal" id="closeGameModalBtn">&times;</button>
@@ -862,40 +679,28 @@
     </section>
 
     <script>
-        // --- 0. ГЕНЕРАЦИЯ ЧАСТИЦ НА ФОНЕ ---
+        // --- 0. ЧАСТИЦЫ ---
         const particlesContainer = document.getElementById('particlesContainer');
-        const particleCount = 30;
-
-        for (let i = 0; i < particleCount; i++) {
+        for (let i = 0; i < 30; i++) {
             const particle = document.createElement('div');
             particle.classList.add('particle');
-            
             const size = Math.random() * 3 + 2;
             particle.style.width = `${size}px`;
             particle.style.height = `${size}px`;
-            
             particle.style.left = `${Math.random() * 100}vw`;
             particle.style.top = `${Math.random() * 100}vh`;
-            
-            const duration = Math.random() * 15 + 10;
-            particle.style.animationDuration = `${duration}s`;
-            
+            particle.style.animationDuration = `${Math.random() * 15 + 10}s`;
             particle.style.animationDelay = `${Math.random() * 10}s`;
-            
             particlesContainer.appendChild(particle);
         }
 
-
-        // --- 1. КАСТОМНЫЙ КУРСОР ---
+        // --- 1. КУРСОР ---
         const cursor = document.getElementById('cursor');
         const cursorFollower = document.getElementById('cursorFollower');
-        
-        let mouseX = 0, mouseY = 0;
-        let followerX = 0, followerY = 0;
+        let mouseX = 0, mouseY = 0, followerX = 0, followerY = 0;
 
         document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
+            mouseX = e.clientX; mouseY = e.clientY;
             cursor.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
         });
 
@@ -909,55 +714,49 @@
 
         const clickableElements = document.querySelectorAll('a, button, input, .game-card, .action-btn, .nav-links a, .genre-btn');
         clickableElements.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursor.classList.add('hover-active');
-                cursorFollower.classList.add('hover-active');
-            });
-            el.addEventListener('mouseleave', () => {
-                cursor.classList.remove('hover-active');
-                cursorFollower.classList.remove('hover-active');
-            });
+            el.addEventListener('mouseenter', () => { cursor.classList.add('hover-active'); cursorFollower.classList.add('hover-active'); });
+            el.addEventListener('mouseleave', () => { cursor.classList.remove('hover-active'); cursorFollower.classList.remove('hover-active'); });
         });
 
 
         // --- 2. БАЗА ДАННЫХ ---
         const gamesData = [
-            { id: 1, title: "Elden Ring", desc: "Эпическая RPG в открытом мире от FromSoftware.", longDesc: "Восстань, Погасший, и стань Повелителем Элдена. Исследуй Межземелье — огромный открытый мир, полный опасностей, тайн и могущественных боссов. Создай своего персонажа и выбери свой путь.", price: "4 999 ₽", priceNum: 4999, oldPrice: "5 999 ₽", img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg", popular: true, genre: "rpg" },
-            { id: 2, title: "Cyberpunk 2077", desc: "Ролевой экшн в мегаполисе Найт-Сити.", longDesc: "Найт-Сити — одержимый властью, гламуром и модификациями тела мегаполис. Ты играешь за наёмника V, ищущего уникальный имплант, который подарит бессмертие. Выбирай, кем стать.", price: "2 999 ₽", priceNum: 2999, oldPrice: "3 999 ₽", img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg", popular: true, genre: "rpg" },
-            { id: 3, title: "Red Dead Redemption 2", desc: "Вестерн-экшн о банде на закате Дикого Запада.", longDesc: "Артур Морган и банда Ван дер Линде — преступники, вынужденные бежать от закона. Эпическая история о верности, предательстве и искуплении на закате эпохи Дикого Запада.", price: "3 499 ₽", priceNum: 3499, oldPrice: "4 499 ₽", img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/header.jpg", popular: true, genre: "action" },
-            { id: 4, title: "GTA V", desc: "Криминальная сага в Лос-Сантосе.", longDesc: "Три совершенно разных преступника объединяются, чтобы провернуть серию дерзких ограблений в Лос-Сантосе. Погрузись в бездонный мир открытого города.", price: "1 499 ₽", priceNum: 1499, oldPrice: "2 000 ₽", img: "https://cdn.cloudflare.steamstatic.com/steam/apps/271590/header.jpg", popular: true, genre: "action" },
-            { id: 5, title: "Baldur's Gate 3", desc: "Легендарная RPG по правилам D&D.", longDesc: "Вернись в Забытые Королевства в этой эпической RPG. Собери отряд и вернись в мир, охваченный войной. Свобода выбора и последствия твоих решений ждут тебя.", price: "4 499 ₽", priceNum: 4499, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1086940/header.jpg", popular: true, genre: "rpg" },
+            { id: 1, title: "Elden Ring", desc: "Эпическая RPG в открытом мире от FromSoftware.", longDesc: "Восстань, Погасший, и стань Повелителем Элдена. Исследуй Межземелье — огромный открытый мир, полный опасностей, тайн и могущественных боссов.", price: "4 999 ₽", priceNum: 4999, oldPrice: "5 999 ₽", img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg", popular: true, genre: "rpg" },
+            { id: 2, title: "Cyberpunk 2077", desc: "Ролевой экшн в мегаполисе Найт-Сити.", longDesc: "Найт-Сити — одержимый властью, гламуром и модификациями тела мегаполис. Ты играешь за наёмника V, ищущего уникальный имплант.", price: "2 999 ₽", priceNum: 2999, oldPrice: "3 999 ₽", img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg", popular: true, genre: "rpg" },
+            { id: 3, title: "Red Dead Redemption 2", desc: "Вестерн-экшн о банде на закате Дикого Запада.", longDesc: "Артур Морган и банда Ван дер Линде — преступники, вынужденные бежать от закона. Эпическая история о верности и искуплении.", price: "3 499 ₽", priceNum: 3499, oldPrice: "4 499 ₽", img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/header.jpg", popular: true, genre: "action" },
+            { id: 4, title: "GTA V", desc: "Криминальная сага в Лос-Сантосе.", longDesc: "Три совершенно разных преступника объединяются, чтобы провернуть серию дерзких ограблений в Лос-Сантосе.", price: "1 499 ₽", priceNum: 1499, oldPrice: "2 000 ₽", img: "https://cdn.cloudflare.steamstatic.com/steam/apps/271590/header.jpg", popular: true, genre: "action" },
+            { id: 5, title: "Baldur's Gate 3", desc: "Легендарная RPG по правилам D&D.", longDesc: "Вернись в Забытые Королевства в этой эпической RPG. Собери отряд и вернись в мир, охваченный войной.", price: "4 499 ₽", priceNum: 4499, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1086940/header.jpg", popular: true, genre: "rpg" },
             { id: 6, title: "The Witcher 3", desc: "Приключения Геральта из Ривии.", longDesc: "Стань охотником на чудовищ Геральтом из Ривии. Исследуй огромный открытый мир, полный интриг, магии и кровожадных монстров.", price: "1 999 ₽", priceNum: 1999, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/292030/header.jpg", popular: true, genre: "rpg" },
             { id: 7, title: "Hogwarts Legacy", desc: "Погрузитесь в мир магии Хогвартса.", longDesc: "Твоя магическая история начинается в XIX веке. Исследуй Хогвартс и его окрестности, освой магию и раскрой древнюю тайну.", price: "3 999 ₽", priceNum: 3999, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/990080/header.jpg", popular: true, genre: "rpg" },
-            { id: 8, title: "God of War", desc: "Кратос и Атрей в мире нордических мифов.", longDesc: "Кратос, бывший призрак Спарты, живет в мире северных богов. Он должен защитить своего сына Атрея и отправиться в опасное путешествие по девяти мирам.", price: "2 499 ₽", priceNum: 2499, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1593500/header.jpg", popular: true, genre: "action" },
-            { id: 9, title: "Resident Evil 4 Remake", desc: "Леон Кеннеди против культистов.", longDesc: "Спецагент Леон Кеннеди отправляется в отдаленную европейскую деревню, чтобы спасти дочь президента. Его ждет кошмар, полный сектантов и мутантов.", price: "3 999 ₽", priceNum: 3999, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/2050650/header.jpg", popular: false, genre: "horror" },
-            { id: 10, title: "Terraria", desc: "Песочница с исследованием и битвами.", longDesc: "Копай, сражайся, исследуй, строй! В этом 2D-мире у тебя есть бесконечные возможности для приключений и создания своего собственного мира.", price: "399 ₽", priceNum: 399, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/105600/header.jpg", popular: false, genre: "survival" },
-            { id: 11, title: "Stardew Valley", desc: "Уютный симулятор фермы.", longDesc: "Унаследовал старую ферму? Преврати зарастающие поля в процветающее хозяйство, заведи друзей в городе и найди свою любовь.", price: "499 ₽", priceNum: 499, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/413150/header.jpg", popular: false, genre: "rpg" },
-            { id: 12, title: "Hades", desc: "Рогалик-экшн о побеге из подземного царства.", longDesc: "Брось вызов самому богу смерти! Пробивайся через подземный мир, используя дары богов Олимпа, и попытайся сбежать из царства Аида.", price: "999 ₽", priceNum: 999, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1145360/header.jpg", popular: false, genre: "action" },
-            { id: 13, title: "Portal 2", desc: "Головоломка с порталами.", longDesc: "Вернись в лабораторию Aperture Science. Решай сложные головоломки с помощью портальной пушки и слушай едкий юмор GLaDOS.", price: "299 ₽", priceNum: 299, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/620/header.jpg", popular: false, genre: "action" },
-            { id: 14, title: "Left 4 Dead 2", desc: "Кооперативный шутер о зомби.", longDesc: "Четверо выживших пробиваются через города, кишащие зомби. Кооперируйся с друзьями, чтобы пережить эту эпидемию.", price: "399 ₽", priceNum: 399, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/550/header.jpg", popular: false, genre: "shooter" },
-            { id: 15, title: "Counter-Strike 2", desc: "Легендарный тактический шутер.", longDesc: "Новое поколение легендарной игры. Улучшенная графика, физика дыма и обновленные карты. Сражайся в командных матчах 5 на 5.", price: "0 ₽", priceNum: 0, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/730/header.jpg", popular: true, genre: "shooter" },
-            { id: 16, title: "Dota 2", desc: "MOBA с бесконечным потолком мастерства.", longDesc: "Сражайся в команде из пяти человек, чтобы уничтожить Древнего противника. Более ста героев, бесконечные стратегии и высокое мастерство.", price: "0 ₽", priceNum: 0, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/570/header.jpg", popular: false, genre: "rpg" },
-            { id: 17, title: "PUBG: BATTLEGROUNDS", desc: "Королевская битва.", longDesc: "Высадись на остров, найди оружие и снаряжение, и сражайся за первое место. Остаться должен только один.", price: "0 ₽", priceNum: 0, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/578080/header.jpg", popular: false, genre: "shooter" },
-            { id: 18, title: "Apex Legends", desc: "Динамичный шутер с уникальными персонажами.", longDesc: "Легенды с уникальными способностями сражаются за славу в Apex Games. Выбери своего героя и покажи, на что способен.", price: "0 ₽", priceNum: 0, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1172470/header.jpg", popular: false, genre: "shooter" },
-            { id: 19, title: "Rust", desc: "Хардкорный симулятор выживания.", longDesc: "Проснись на пустом острове с камнем и факелом. Строй базу, собирай ресурсы, крафти оружие и защищайся от других игроков.", price: "1 499 ₽", priceNum: 1499, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/252490/header.jpg", popular: false, genre: "survival" },
-            { id: 20, title: "Valheim", desc: "Выживание в мире викингов.", longDesc: "Исследуй десятый мир скандинавской мифологии. Строй, крафти и сражайся с древними богами и монстрами в этом суровом мире.", price: "899 ₽", priceNum: 899, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/892970/header.jpg", popular: false, genre: "survival" },
-            { id: 21, title: "Sekiro", desc: "Суровый экшн о самурае.", longDesc: "Стань одноруким волком и верни свою честь. Сражайся с могущественными врагами в Японии эпохи Сэнгоку.", price: "2 999 ₽", priceNum: 2999, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/814380/header.jpg", popular: false, genre: "action" },
-            { id: 22, title: "Dark Souls III", desc: "Классика жанра souls-like.", longDesc: "Мир погрузился во тьму. Восстань, пепельный, и брось вызов Повелителям Пепла в этом беспощадном экшене.", price: "2 499 ₽", priceNum: 2499, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/374320/header.jpg", popular: false, genre: "rpg" },
-            { id: 23, title: "DOOM Eternal", desc: "Молниеносный шутер.", longDesc: "Ад вторгся на Землю. Уничтожай демонов в безумном ритме под тяжелый металл. Ты — Палач Рока.", price: "1 999 ₽", priceNum: 1999, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/782330/header.jpg", popular: false, genre: "shooter" },
-            { id: 24, title: "Forza Horizon 5", desc: "Открытый мир Мексики и лучшие гонки.", longDesc: "Исследуй яркий и красочный мир Мексики за рулем лучших автомобилей. Гоняй, трюкачь и наслаждайся пейзажами.", price: "3 499 ₽", priceNum: 3499, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1551360/header.jpg", popular: false, genre: "racing" },
-            { id: 25, title: "FIFA 23", desc: "Самый популярный футбольный симулятор.", longDesc: "Играй в футбол с лучшими командами и игроками мира. Новые режимы, обновленная физика и графика.", price: "2 999 ₽", priceNum: 2999, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1811260/header.jpg", popular: false, genre: "sports" },
-            { id: 26, title: "EA Sports FC 24", desc: "Новое имя легендарного футбола.", longDesc: "Новое поколение футбольных симуляторов. Технология HyperMotionV, реалистичная анимация и множество режимов.", price: "4 999 ₽", priceNum: 4999, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/2195250/header.jpg", popular: false, genre: "sports" },
-            { id: 27, title: "Rainbow Six Siege", desc: "Тактический шутер 5 на 5.", longDesc: "Элитный отряд спецназа сражается с террористами. Разрушай стены, используй гаджеты и работай в команде.", price: "999 ₽", priceNum: 999, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/359550/header.jpg", popular: false, genre: "shooter" },
-            { id: 28, title: "Dead by Daylight", desc: "Асимметричный хоррор.", longDesc: "Один убийца против четырех выживших. Прячься, убегай или сражайся в этом кошмарном мире.", price: "799 ₽", priceNum: 799, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/381210/header.jpg", popular: false, genre: "horror" },
-            { id: 29, title: "Phasmophobia", desc: "Кооперативная охота за призраками.", longDesc: "Собери команду охотников за призраками и отправляйся в заброшенные места. Используй оборудование, чтобы найти доказательства и выжить.", price: "499 ₽", priceNum: 499, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/739630/header.jpg", popular: false, genre: "horror" },
-            { id: 30, title: "Among Us", desc: "Найди предателя на корабле.", longDesc: "Играй с друзьями на космическом корабле. Один из вас — предатель. Выполняй задания или убивай, чтобы победить.", price: "199 ₽", priceNum: 199, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/945360/header.jpg", popular: false, genre: "action" },
-            { id: 31, title: "Fall Guys", desc: "Веселые королевские битвы.", longDesc: "Участвуй в безумных испытаниях с желатиновыми человечками. Пробивайся к финишу и стань победителем.", price: "0 ₽", priceNum: 0, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1097150/header.jpg", popular: false, genre: "action" },
-            { id: 32, title: "Rocket League", desc: "Футбол на машинах.", longDesc: "Смесь футбола и гонок. Управляй машиной и забивай голы, используя реактивное ускорение и трюки.", price: "0 ₽", priceNum: 0, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/252950/header.jpg", popular: false, genre: "sports" },
-            { id: 33, title: "It Takes Two", desc: "Лучшая кооперативная игра для двоих.", longDesc: "Отправляйся в безумное приключение вместе с другом. Вас ждут головоломки и мини-игры в мире, полном сюрпризов.", price: "1 999 ₽", priceNum: 1999, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1426210/header.jpg", popular: false, genre: "action" },
-            { id: 34, title: "Detroit: Become Human", desc: "Интерактивное кино о восстании андроидов.", longDesc: "Три истории андроидов в мире, где они стали почти как люди. Твои решения определят их судьбу и будущее человечества.", price: "1 499 ₽", priceNum: 1499, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1222140/header.jpg", popular: false, genre: "action" },
-            { id: 35, title: "Death Stranding", desc: "Уникальный опыт от Хидео Кодзимы.", longDesc: "Сэм Портер Бриджес должен доставить припасы в разрушенную Америку. Путешествуй по миру, полному опасностей и загадок.", price: "2 499 ₽", priceNum: 2499, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1190460/header.jpg", popular: false, genre: "action" },
-            { id: 36, title: "Subnautica", desc: "Выживание на океанической планете.", longDesc: "Твой корабль потерпел крушение на планете, покрытой океаном. Исследуй глубины, собирай ресурсы и строй базу, чтобы выжить.", price: "899 ₽", priceNum: 899, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/264710/header.jpg", popular: false, genre: "survival" },
+            { id: 8, title: "God of War", desc: "Кратос и Атрей в мире нордических мифов.", longDesc: "Кратос, бывший призрак Спарты, живет в мире северных богов. Он должен защитить своего сына Атрея.", price: "2 499 ₽", priceNum: 2499, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1593500/header.jpg", popular: true, genre: "action" },
+            { id: 9, title: "Resident Evil 4 Remake", desc: "Леон Кеннеди против культистов.", longDesc: "Спецагент Леон Кеннеди отправляется в отдаленную европейскую деревню, чтобы спасти дочь президента.", price: "3 999 ₽", priceNum: 3999, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/2050650/header.jpg", popular: false, genre: "horror" },
+            { id: 10, title: "Terraria", desc: "Песочница с исследованием и битвами.", longDesc: "Копай, сражайся, исследуй, строй! В этом 2D-мире у тебя есть бесконечные возможности.", price: "399 ₽", priceNum: 399, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/105600/header.jpg", popular: false, genre: "survival" },
+            { id: 11, title: "Stardew Valley", desc: "Уютный симулятор фермы.", longDesc: "Унаследовал старую ферму? Преврати зарастающие поля в процветающее хозяйство и найди свою любовь.", price: "499 ₽", priceNum: 499, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/413150/header.jpg", popular: false, genre: "rpg" },
+            { id: 12, title: "Hades", desc: "Рогалик-экшн о побеге из подземного царства.", longDesc: "Брось вызов самому богу смерти! Пробивайся через подземный мир, используя дары богов Олимпа.", price: "999 ₽", priceNum: 999, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1145360/header.jpg", popular: false, genre: "action" },
+            { id: 13, title: "Portal 2", desc: "Головоломка с порталами.", longDesc: "Вернись в лабораторию Aperture Science. Решай сложные головоломки с помощью портальной пушки.", price: "299 ₽", priceNum: 299, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/620/header.jpg", popular: false, genre: "action" },
+            { id: 14, title: "Left 4 Dead 2", desc: "Кооперативный шутер о зомби.", longDesc: "Четверо выживших пробиваются через города, кишащие зомби. Кооперируйся с друзьями.", price: "399 ₽", priceNum: 399, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/550/header.jpg", popular: false, genre: "shooter" },
+            { id: 15, title: "Counter-Strike 2", desc: "Легендарный тактический шутер.", longDesc: "Новое поколение легендарной игры. Улучшенная графика, физика дыма и обновленные карты.", price: "0 ₽", priceNum: 0, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/730/header.jpg", popular: true, genre: "shooter" },
+            { id: 16, title: "Dota 2", desc: "MOBA с бесконечным потолком мастерства.", longDesc: "Сражайся в команде из пяти человек, чтобы уничтожить Древнего противника. Более ста героев.", price: "0 ₽", priceNum: 0, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/570/header.jpg", popular: false, genre: "rpg" },
+            { id: 17, title: "PUBG: BATTLEGROUNDS", desc: "Королевская битва.", longDesc: "Высадись на остров, найди оружие и снаряжение, и сражайся за первое место.", price: "0 ₽", priceNum: 0, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/578080/header.jpg", popular: false, genre: "shooter" },
+            { id: 18, title: "Apex Legends", desc: "Динамичный шутер с уникальными персонажами.", longDesc: "Легенды с уникальными способностями сражаются за славу в Apex Games.", price: "0 ₽", priceNum: 0, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1172470/header.jpg", popular: false, genre: "shooter" },
+            { id: 19, title: "Rust", desc: "Хардкорный симулятор выживания.", longDesc: "Проснись на пустом острове с камнем и факелом. Строй базу, собирай ресурсы, крафти оружие.", price: "1 499 ₽", priceNum: 1499, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/252490/header.jpg", popular: false, genre: "survival" },
+            { id: 20, title: "Valheim", desc: "Выживание в мире викингов.", longDesc: "Исследуй десятый мир скандинавской мифологии. Строй, крафти и сражайся с древними богами.", price: "899 ₽", priceNum: 899, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/892970/header.jpg", popular: false, genre: "survival" },
+            { id: 21, title: "Sekiro", desc: "Суровый экшн о самурае.", longDesc: "Стань одноруким волком и верни свою честь. Сражайся с могущественными врагами.", price: "2 999 ₽", priceNum: 2999, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/814380/header.jpg", popular: false, genre: "action" },
+            { id: 22, title: "Dark Souls III", desc: "Классика жанра souls-like.", longDesc: "Мир погрузился во тьму. Восстань, пепельный, и брось вызов Повелителям Пепла.", price: "2 499 ₽", priceNum: 2499, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/374320/header.jpg", popular: false, genre: "rpg" },
+            { id: 23, title: "DOOM Eternal", desc: "Молниеносный шутер.", longDesc: "Ад вторгся на Землю. Уничтожай демонов в безумном ритме под тяжелый металл.", price: "1 999 ₽", priceNum: 1999, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/782330/header.jpg", popular: false, genre: "shooter" },
+            { id: 24, title: "Forza Horizon 5", desc: "Открытый мир Мексики и лучшие гонки.", longDesc: "Исследуй яркий и красочный мир Мексики за рулем лучших автомобилей.", price: "3 499 ₽", priceNum: 3499, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1551360/header.jpg", popular: false, genre: "racing" },
+            { id: 25, title: "FIFA 23", desc: "Самый популярный футбольный симулятор.", longDesc: "Играй в футбол с лучшими командами и игроками мира. Новые режимы и графика.", price: "2 999 ₽", priceNum: 2999, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1811260/header.jpg", popular: false, genre: "sports" },
+            { id: 26, title: "EA Sports FC 24", desc: "Новое имя легендарного футбола.", longDesc: "Новое поколение футбольных симуляторов. Технология HyperMotionV и множество режимов.", price: "4 999 ₽", priceNum: 4999, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/2195250/header.jpg", popular: false, genre: "sports" },
+            { id: 27, title: "Rainbow Six Siege", desc: "Тактический шутер 5 на 5.", longDesc: "Элитный отряд спецназа сражается с террористами. Разрушай стены и работай в команде.", price: "999 ₽", priceNum: 999, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/359550/header.jpg", popular: false, genre: "shooter" },
+            { id: 28, title: "Dead by Daylight", desc: "Асимметричный хоррор.", longDesc: "Один убийца против четырех выживших. Прячься, убегай или сражайся.", price: "799 ₽", priceNum: 799, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/381210/header.jpg", popular: false, genre: "horror" },
+            { id: 29, title: "Phasmophobia", desc: "Кооперативная охота за призраками.", longDesc: "Собери команду охотников за призраками и отправляйся в заброшенные места.", price: "499 ₽", priceNum: 499, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/739630/header.jpg", popular: false, genre: "horror" },
+            { id: 30, title: "Among Us", desc: "Найди предателя на корабле.", longDesc: "Играй с друзьями на космическом корабле. Один из вас — предатель.", price: "199 ₽", priceNum: 199, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/945360/header.jpg", popular: false, genre: "action" },
+            { id: 31, title: "Fall Guys", desc: "Веселые королевские битвы.", longDesc: "Участвуй в безумных испытаниях с желатиновыми человечками. Пробивайся к финишу.", price: "0 ₽", priceNum: 0, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1097150/header.jpg", popular: false, genre: "action" },
+            { id: 32, title: "Rocket League", desc: "Футбол на машинах.", longDesc: "Смесь футбола и гонок. Управляй машиной и забивай голы.", price: "0 ₽", priceNum: 0, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/252950/header.jpg", popular: false, genre: "sports" },
+            { id: 33, title: "It Takes Two", desc: "Лучшая кооперативная игра для двоих.", longDesc: "Отправляйся в безумное приключение вместе с другом. Вас ждут головоломки и мини-игры.", price: "1 999 ₽", priceNum: 1999, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1426210/header.jpg", popular: false, genre: "action" },
+            { id: 34, title: "Detroit: Become Human", desc: "Интерактивное кино о восстании андроидов.", longDesc: "Три истории андроидов в мире, где они стали почти как люди. Твои решения определят их судьбу.", price: "1 499 ₽", priceNum: 1499, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1222140/header.jpg", popular: false, genre: "action" },
+            { id: 35, title: "Death Stranding", desc: "Уникальный опыт от Хидео Кодзимы.", longDesc: "Сэм Портер Бриджес должен доставить припасы в разрушенную Америку.", price: "2 499 ₽", priceNum: 2499, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1190460/header.jpg", popular: false, genre: "action" },
+            { id: 36, title: "Subnautica", desc: "Выживание на океанической планете.", longDesc: "Твой корабль потерпел крушение на планете, покрытой океаном. Исследуй глубины.", price: "899 ₽", priceNum: 899, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/264710/header.jpg", popular: false, genre: "survival" },
         ];
 
         // --- 3. СОСТОЯНИЕ ---
@@ -973,52 +772,57 @@
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
             toast.className = `toast ${type === 'fav' ? 'fav' : ''}`;
-            
             const icon = type === 'fav' 
                 ? `<svg class="svg-icon" viewBox="0 0 24 24" style="width: 18px; height: 18px;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>`
                 : `<svg class="svg-icon" viewBox="0 0 24 24" style="width: 18px; height: 18px;"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>`;
-
             toast.innerHTML = `${icon} ${message}`;
             container.appendChild(toast);
-
             setTimeout(() => toast.classList.add('show'), 10);
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 400);
-            }, 3000);
+            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 3000);
         }
 
-        // --- 5. БОКОВАЯ ПАНЕЛЬ ---
-        const drawer = document.getElementById('drawer');
+        // --- 5. ЦЕНТРАЛЬНОЕ ОКНО (Корзина/Избранное) ---
         const drawerOverlay = document.getElementById('drawerOverlay');
+        const drawer = document.getElementById('drawer');
         const drawerTitle = document.getElementById('drawerTitle');
         const drawerBody = document.getElementById('drawerBody');
         const drawerFooter = document.getElementById('drawerFooter');
         const drawerTotalPrice = document.getElementById('drawerTotalPrice');
+        const gtaGirl = document.getElementById('gtaGirl');
 
         window.openDrawer = (mode) => {
             currentDrawerMode = mode;
             drawerTitle.textContent = mode === 'cart' ? 'КОРЗИНА' : 'ИЗБРАННОЕ';
             drawerFooter.style.display = mode === 'cart' ? 'block' : 'none';
             renderDrawer();
-            drawer.classList.add('active');
             drawerOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
         };
 
-        function closeDrawer() {
-            drawer.classList.remove('active');
+        window.closeDrawer = () => {
             drawerOverlay.classList.remove('active');
-        }
+            document.body.style.overflow = '';
+        };
 
-        document.getElementById('closeDrawer').addEventListener('click', closeDrawer);
-        drawerOverlay.addEventListener('click', closeDrawer);
+        window.closeDrawerOnBg = (event) => {
+            if (event.target === drawerOverlay) {
+                closeDrawer();
+            }
+        };
 
         function renderDrawer() {
             const items = currentDrawerMode === 'cart' ? cart : favorites;
             drawerBody.innerHTML = '';
             
             if (items.length === 0) {
-                drawerBody.innerHTML = `<div class="drawer-empty">Здесь пока пусто...</div>`;
+                drawerBody.innerHTML = `
+                    <div class="drawer-empty">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M12 8v4l3 3"></path>
+                        </svg>
+                        Здесь пока пусто...
+                    </div>`;
                 drawerTotalPrice.textContent = '0 ₽';
                 return;
             }
@@ -1049,13 +853,19 @@
         }
 
         window.removeFromDrawer = (id) => {
-            if (currentDrawerMode === 'cart') {
-                toggleCart(id, '', null, true);
-            } else {
-                toggleFav(id, '', null, true);
-            }
+            if (currentDrawerMode === 'cart') toggleCart(id, '', null, true);
+            else toggleFav(id, '', null, true);
             renderDrawer();
         };
+
+        // Эффект параллакса для девушки при движении мыши
+        drawerOverlay.addEventListener('mousemove', (e) => {
+            if (!drawerOverlay.classList.contains('active')) return;
+            const x = (window.innerWidth / 2 - e.clientX) / 50;
+            const y = (window.innerHeight / 2 - e.clientY) / 50;
+            gtaGirl.style.transform = `translate(${x}px, ${y}px)`;
+        });
+
 
         // --- 6. РЕНДЕР КАРТОЧЕК ---
         const createCardHTML = (game) => {
@@ -1163,7 +973,7 @@
             }
             
             updateBadges();
-            if (drawer.classList.contains('active') && currentDrawerMode === 'cart') renderDrawer();
+            if (drawerOverlay.classList.contains('active') && currentDrawerMode === 'cart') renderDrawer();
             if(!fromDrawer) renderGrids();
             
             if (currentGameId === id) {
@@ -1187,7 +997,7 @@
             }
             
             updateBadges();
-            if (drawer.classList.contains('active') && currentDrawerMode === 'fav') renderDrawer();
+            if (drawerOverlay.classList.contains('active') && currentDrawerMode === 'fav') renderDrawer();
             if(!fromDrawer) renderGrids();
             
             if (currentGameId === id) {
@@ -1297,7 +1107,9 @@
                 if (authModal.classList.contains('active')) {
                     authModal.classList.remove('active');
                 }
-                closeDrawer();
+                if (drawerOverlay.classList.contains('active')) {
+                    closeDrawer();
+                }
             }
         });
 
