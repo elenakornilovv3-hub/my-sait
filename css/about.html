@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>О магазине — SteamShop</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="header">
+  <div class="container header__inner">
+    <a href="index.html" class="logo"><span class="logo__mark">S</span>SteamShop</a>
+    <nav class="nav">
+      <a href="index.html">Главная</a>
+      <a href="catalog.html">Каталог</a>
+      <a href="news.html">Новости</a>
+      <a href="library.html">Библиотека</a>
+      <a href="about.html" class="active">О магазине</a>
+    </nav>
+    <div class="header__actions">
+      <button class="icon-btn burger" aria-label="Меню">☰</button>
+      <a class="icon-btn" href="cart.html" aria-label="Корзина">🛒<span class="cart-count">0</span></a>
+    </div>
+  </div>
+</header>
+
+<section class="section" style="padding-top:52px">
+  <div class="container">
+    <div class="section__head reveal">
+      <div><div class="eyebrow">О нас</div><h2>Магазин, которому доверяют</h2>
+      <p>С 2019 года выдаём официальные ключи для Steam и отвечаем в поддержке за 30 минут.</p></div>
+    </div>
+
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-bottom:60px">
+      <div class="news-card reveal d1"><h3>186 000+</h3><p>покупателей и 4,9 средняя оценка сервиса.</p></div>
+      <div class="news-card reveal d2"><h3>12 480 игр</h3><p>в каталоге: от инди до крупных ААА-релизов.</p></div>
+      <div class="news-card reveal d3"><h3>60 секунд</h3><p>среднее время выдачи ключа после оплаты.</p></div>
+    </div>
+
+    <div id="faq" style="max-width:840px">
+      <div class="eyebrow">Частые вопросы</div>
+      <h2 style="font-size:32px;letter-spacing:-1px;margin-bottom:24px">FAQ</h2>
+      <!-- аккордеон заполняется из data.js -->
+      <div id="faq-root"></div>
+    </div>
+
+    <div id="contact" style="max-width:840px;margin-top:70px">
+      <div class="eyebrow">Связаться</div>
+      <h2 style="font-size:32px;letter-spacing:-1px;margin-bottom:24px">Поддержка</h2>
+      <form id="contact-form" style="background:var(--bg-2);border:1px solid var(--line);border-radius:18px;padding:26px">
+        <div class="form-grid">
+          <div class="field"><label for="f-name">Имя</label><input id="f-name" placeholder="Как к вам обращаться"><small></small></div>
+          <div class="field"><label for="f-email">E-mail</label><input id="f-email" type="email" placeholder="you@mail.ru"><small></small></div>
+          <div class="field full"><label for="f-msg">Сообщение</label><textarea id="f-msg" rows="4" placeholder="Опишите проблему или задайте вопрос"></textarea><small></small></div>
+        </div>
+        <button class="btn btn--primary" type="submit" style="margin-top:18px">Отправить</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__bottom" style="margin-top:0;border:none;padding-top:0">
+      <span>© 2026 SteamShop</span><span>Демо-проект, не связан с Valve</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script>
+  /* Сборка FAQ из данных */
+  document.addEventListener('DOMContentLoaded', () => {
+    const root = document.getElementById('faq-root');
+    if (root && typeof FAQ !== 'undefined') {
+      root.innerHTML = FAQ.map(([q, a]) => `
+        <div class="acc-item">
+          <button class="acc-btn">${q}<i>+</i></button>
+          <div class="acc-body"><div>${a}</div></div>
+        </div>`).join('');
+      /* переинициализируем обработчики аккордеона */
+      document.querySelectorAll('.acc-item').forEach(item => {
+        const btn = item.querySelector('.acc-btn'), body = item.querySelector('.acc-body');
+        btn.onclick = () => {
+          const open = item.classList.toggle('open');
+          body.style.maxHeight = open ? body.scrollHeight + 'px' : 0;
+        };
+      });
+    }
+  });
+</script>
+</body>
+</html>
