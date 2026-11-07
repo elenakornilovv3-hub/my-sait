@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Каталог игр — SteamShop</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="header">
+  <div class="container header__inner">
+    <a href="index.html" class="logo"><span class="logo__mark">S</span>SteamShop</a>
+    <nav class="nav">
+      <a href="index.html">Главная</a>
+      <a href="catalog.html" class="active">Каталог</a>
+      <a href="news.html">Новости</a>
+      <a href="library.html">Библиотека</a>
+      <a href="about.html">О магазине</a>
+    </nav>
+    <div class="header__actions">
+      <button class="icon-btn burger" aria-label="Меню">☰</button>
+      <a class="icon-btn" href="cart.html" aria-label="Корзина">🛒<span class="cart-count">0</span></a>
+    </div>
+  </div>
+</header>
+
+<section class="section" style="padding-top:52px;padding-bottom:0">
+  <div class="container">
+    <div class="section__head reveal">
+      <div><div class="eyebrow">Каталог</div><h2>Все игры</h2><p id="result-count">—</p></div>
+    </div>
+
+    <div class="filters reveal">
+      <div class="search-wrap">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="search" type="search" placeholder="Поиск по названию…">
+      </div>
+      <select id="sort">
+        <option value="popular">Сначала популярные</option>
+        <option value="cheap">Сначала дешёвые</option>
+        <option value="exp">Сначала дорогие</option>
+        <option value="rating">По рейтингу</option>
+        <option value="discount">По размеру скидки</option>
+      </select>
+      <div style="display:flex;align-items:center;gap:10px;padding:0 6px">
+        <input id="price" type="range" min="300" max="3000" step="50" value="3000" style="width:120px;accent-color:#4fc3f7">
+        <span id="price-out" style="font-size:13px;color:var(--muted);white-space:nowrap">3000 ₽</span>
+      </div>
+      <button class="btn btn--ghost btn--sm" id="view-toggle">Список</button>
+    </div>
+
+    <div class="chips">
+      <span class="chip active" data-genre="all">Все</span>
+      <span class="chip" data-genre="RPG">RPG</span>
+      <span class="chip" data-genre="Космос">Космос</span>
+      <span class="chip" data-genre="Сoulslike">Soulslike</span>
+      <span class="chip" data-genre="Инди">Инди</span>
+      <span class="chip" data-genre="Шутер">Шутер</span>
+      <span class="chip" data-genre="Хоррор">Хоррор</span>
+      <span class="chip" data-genre="Стратегия">Стратегия</span>
+    </div>
+
+    <div class="grid" id="catalog-grid"></div>
+    <div class="chips" id="pagination" style="justify-content:center;margin-top:34px"></div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div><a href="index.html" class="logo"><span class="logo__mark">S</span>SteamShop</a>
+      <p style="color:var(--muted);font-size:14px;margin-top:14px">Ключи для Steam с мгновенной выдачей.</p></div>
+      <div><h4>Магазин</h4><ul><li><a href="catalog.html">Каталог</a></li><li><a href="news.html">Новости</a></li><li><a href="cart.html">Корзина</a></li></ul></div>
+      <div><h4>Помощь</h4><ul><li><a href="about.html">О магазине</a></li><li><a href="about.html#faq">FAQ</a></li></ul></div>
+      <div><h4>Правовое</h4><ul><li><a href="about.html">Условия</a></li><li><a href="about.html">Возврат</a></li></ul></div>
+    </div>
+    <div class="footer__bottom"><span>© 2026 SteamShop</span><span>Демо-проект</span></div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
